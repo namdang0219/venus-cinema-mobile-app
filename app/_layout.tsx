@@ -1,3 +1,4 @@
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	DarkTheme,
@@ -12,6 +13,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { SheetProvider } from "react-native-actions-sheet";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -33,19 +35,23 @@ export default function RootLayout() {
 	}
 
 	return (
-		<GestureHandlerRootView style={{ flex: 1 }}>
-			<ThemeProvider
-				value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-			>
-				<Stack>
-					<Stack.Screen
-						name="(tabs)"
-						options={{ headerShown: false }}
-					/>
-					<Stack.Screen name="+not-found" />
-				</Stack>
-				<StatusBar style="auto" />
-			</ThemeProvider>
-		</GestureHandlerRootView>
+		<SafeAreaProvider>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<ThemeProvider
+					value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+				>
+					<SheetProvider context="global">
+						<Stack>
+							<Stack.Screen
+								name="(tabs)"
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen name="+not-found" />
+						</Stack>
+					</SheetProvider>
+					<StatusBar style="auto" />
+				</ThemeProvider>
+			</GestureHandlerRootView>
+		</SafeAreaProvider>
 	);
 }

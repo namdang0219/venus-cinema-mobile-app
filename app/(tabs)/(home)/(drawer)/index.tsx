@@ -10,12 +10,14 @@ import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/ThemedText";
 import { Dimentions } from "@/constants/Dimentions";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
+import { useRouter } from "expo-router";
 
 const itemWidth = Dimentions.window.width / 2.6;
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
 
 const HomeScreen = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
+	const { push } = useRouter();
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -97,7 +99,7 @@ const HomeScreen = () => {
 									>
 										{`Yêu nhầm bạn thân (2019)`}
 									</ThemedText>
-									<TouchableOpacity
+									<CustomTouchableOpacity
 										style={{
 											backgroundColor: Colors.dark.tint,
 											height: 34,
@@ -106,6 +108,7 @@ const HomeScreen = () => {
 											borderRadius: 1000,
 											marginTop: 8,
 										}}
+										onPress={() => push("/detail/1")}
 									>
 										<ThemedText
 											style={{
@@ -116,7 +119,7 @@ const HomeScreen = () => {
 										>
 											チケットを購入
 										</ThemedText>
-									</TouchableOpacity>
+									</CustomTouchableOpacity>
 								</View>
 							)}
 						/>
@@ -363,7 +366,7 @@ const HomeScreen = () => {
 						/>
 					</View>
 
-					<View style={{opacity: 0.5, marginTop: 30}}>
+					<View style={{ opacity: 0.5, marginTop: 30 }}>
 						<ThemedText
 							style={{
 								fontSize: 10,
