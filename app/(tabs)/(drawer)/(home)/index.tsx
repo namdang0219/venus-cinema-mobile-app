@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image } from "react-native";
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
@@ -11,6 +11,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Dimentions } from "@/constants/Dimentions";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { useRouter } from "expo-router";
+import DrawerHeader from "@/module/DrawerHeader";
 
 const itemWidth = Dimentions.window.width / 2.6;
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
@@ -29,6 +30,8 @@ const HomeScreen = () => {
 	return (
 		<>
 			<StatusBar style="light" />
+
+			<DrawerHeader />
 
 			<ScrollView
 				style={{

@@ -13,7 +13,7 @@ import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import FormLabel from "@/components/label/FormLabel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import FormInput from "../../../../components/input/FormInput";
+import FormInput from "@/components/input/FormInput";
 
 const ContactScreen = () => {
 	const contactSheetRef = useRef<ActionSheetRef>(null);

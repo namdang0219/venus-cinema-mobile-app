@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import React from "react";
 import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
@@ -23,7 +23,7 @@ export default function TabLayout() {
 				}}
 			>
 				<Tabs.Screen
-					name="(home)"
+					name="(drawer)"
 					options={{
 						title: "ホーム",
 						tabBarIcon: ({ color }) => (
@@ -36,7 +36,7 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="search"
+					name="(search)"
 					options={{
 						title: "検索",
 						tabBarIcon: ({ color }) => (
@@ -45,7 +45,7 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="save"
+					name="(save)"
 					options={{
 						title: "保存",
 						tabBarIcon: ({ color }) => (
@@ -54,7 +54,7 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="notification"
+					name="(notification)"
 					options={{
 						title: "通知",
 						tabBarIcon: ({ color }) => (
@@ -63,7 +63,7 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="menu"
+					name="(menu)"
 					options={{
 						title: "メニュー",
 						tabBarIcon: ({ color }) => (
