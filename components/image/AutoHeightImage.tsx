@@ -13,7 +13,7 @@ export const AutoHeightImage: React.FC<{
 	style?: StyleProp<ImageStyle>;
 }> = (props) => {
 	const { source, style, width } = props;
-	const [height, setHeight] = useState<number>(0);
+	const [height, setHeight] = useState<number>(120);
 
 	useEffect(() => {
 		if (typeof source === "number") {

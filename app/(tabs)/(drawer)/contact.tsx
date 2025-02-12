@@ -25,6 +25,7 @@ const ContactScreen = () => {
 				flex: 1,
 				paddingHorizontal: Dimentions.appPadding,
 				paddingTop: 20,
+				backgroundColor: Colors["dark"].backgroundSecondary,
 			}}
 		>
 			<View style={{ flexDirection: "row", gap: 10 }}>
@@ -136,8 +137,8 @@ const ContactScreen = () => {
 				containerStyle={{
 					borderTopLeftRadius: 20,
 					borderTopRightRadius: 20,
-					backgroundColor: Colors.dark.background,
-					paddingBottom: insets.bottom,
+					backgroundColor: Colors.dark.backgroundSecondary,
+					paddingBottom: insets.bottom + 10,
 					paddingHorizontal: Dimentions.appPadding,
 				}}
 				gestureEnabled
@@ -147,7 +148,7 @@ const ContactScreen = () => {
 					height: 4,
 				}}
 			>
-				<View style={{ gap: 12 }}>
+				<View style={{ gap: 12, paddingTop: 10 }}>
 					<View>
 						<FormLabel>氏名：</FormLabel>
 						<FormInput placeholder="氏名を入力..." />

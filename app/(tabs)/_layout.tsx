@@ -1,10 +1,9 @@
-import { Stack, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
 import { HapticTab } from "@/components/HapticTab";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Feather, Ionicons, Octicons } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();

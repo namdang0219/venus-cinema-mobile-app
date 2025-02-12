@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React from "react";
 import HeaderContainer from "@/components/ui/HeaderContainer";
 import { useNavigation } from "expo-router";
@@ -43,6 +43,7 @@ const DrawerHeader = () => {
 
 const styles = StyleSheet.create({
 	header: {
+		flex: 1,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",

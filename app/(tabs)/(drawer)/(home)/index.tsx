@@ -12,6 +12,7 @@ import { Dimentions } from "@/constants/Dimentions";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { useRouter } from "expo-router";
 import DrawerHeader from "@/module/DrawerHeader";
+import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 
 const itemWidth = Dimentions.window.width / 2.6;
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
@@ -62,45 +63,44 @@ const HomeScreen = () => {
 					</View>
 
 					{/* playing  */}
-					<View style={{ gap: 12 }}>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-								paddingHorizontal: Dimentions.appPadding,
-							}}
-						>
-							<ThemedText type="subtitle">上映中</ThemedText>
-							<ThemedText type="link">すべて</ThemedText>
-						</View>
-						<FlatList
-							data={Array(5).fill(Array(5).fill(null))}
-							horizontal
-							contentContainerStyle={{
-								paddingLeft: Dimentions.appPadding,
-								gap: 15,
-							}}
-							keyExtractor={(item, index) => index.toString()}
-							showsHorizontalScrollIndicator={false}
-							renderItem={({ item, index }) => (
-								<View style={{ width: itemWidth }}>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/temp/-uploaded-phim_yeu-nham_cr_250x350.jpg",
-										}}
-										style={{
-											width: itemWidth,
-											aspectRatio: "3/4.2",
-											borderRadius: 5,
-										}}
-									/>
+					<HorizontalListLayout
+						title="上映中"
+						rightButtonAction={() => {}}
+						listItems={Array(5).fill(Array(5))}
+					/>
+
+					{/* member sale  */}
+					<HorizontalListLayout
+						title="会員キャンペーン"
+						rightButtonAction={() => {}}
+						listItems={Array(3).fill(null)}
+						customItem={
+							<View style={{ width: campainItemWidth, gap: 10 }}>
+								<Image
+									source={{
+										uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
+									}}
+									style={{
+										width: campainItemWidth,
+										aspectRatio: "2/0.95",
+										borderRadius: 5,
+									}}
+								/>
+								<View
+									style={{
+										flexDirection: "row",
+										gap: 10,
+									}}
+								>
 									<ThemedText
-										type="defaultSemiBold"
-										style={{ marginTop: 6, fontSize: 14 }}
 										numberOfLines={2}
+										style={{
+											flex: 1,
+											textTransform: "uppercase",
+										}}
 									>
-										{`Yêu nhầm bạn thân (2019)`}
+										ĐIỂM CÀNG LỚN - QUÀ CÀNG TO | SĂN NGAY
+										KẺO LỠ
 									</ThemedText>
 									<CustomTouchableOpacity
 										style={{
@@ -109,79 +109,76 @@ const HomeScreen = () => {
 											justifyContent: "center",
 											alignItems: "center",
 											borderRadius: 1000,
-											marginTop: 8,
+											width: 50,
 										}}
-										onPress={() => push("/detail/1")}
 									>
-										<ThemedText
+										<Text
 											style={{
-												fontSize: 13,
 												color: "white",
 												fontWeight: "500",
 											}}
 										>
-											チケットを購入
-										</ThemedText>
+											見る
+										</Text>
 									</CustomTouchableOpacity>
 								</View>
-							)}
-						/>
-					</View>
+							</View>
+						}
+					/>
+
+					{/* upcoming  */}
+					<HorizontalListLayout
+						title="公開予定"
+						rightButtonAction={() => {}}
+						listItems={Array(5).fill(5)}
+					/>
 
 					{/* member sale  */}
-					<View style={{ gap: 12 }}>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-								paddingHorizontal: Dimentions.appPadding,
-							}}
-						>
-							<ThemedText type="subtitle">
-								会員キャンペーン
-							</ThemedText>
-							<ThemedText type="link">すべて</ThemedText>
-						</View>
-						<FlatList
-							data={Array(3).fill(null)}
-							horizontal
-							contentContainerStyle={{
-								paddingLeft: Dimentions.appPadding,
-								gap: 15,
-							}}
-							showsHorizontalScrollIndicator={false}
-							keyExtractor={(item, index) => index.toString()}
-							renderItem={({ item, index }) => (
+					<HorizontalListLayout
+						title="キャンペーン"
+						rightButtonAction={() => {}}
+						listItems={Array(3).fill(null)}
+						customItem={
+							<View style={{ width: campainItemWidth, gap: 10 }}>
+								<Image
+									source={{
+										uri: "https://www.venuscinema.vn/uploaded/khuyen-mai-uu-dai/uu%20dai%20com%20bo%201%20venus%20cinema%20hoa%20binh-01.jpg",
+									}}
+									style={{
+										width: campainItemWidth,
+										aspectRatio: "2/1.35",
+										borderRadius: 5,
+									}}
+								/>
 								<View
-									style={{ width: campainItemWidth, gap: 10 }}
+									style={{
+										gap: 10,
+									}}
 								>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
-										}}
-										style={{
-											width: campainItemWidth,
-											aspectRatio: "2/0.95",
-											borderRadius: 5,
-										}}
-									/>
-									<View
-										style={{
-											flexDirection: "row",
-											gap: 10,
-										}}
-									>
+									<View style={{ flex: 1 }}>
 										<ThemedText
 											numberOfLines={2}
 											style={{
-												flex: 1,
 												textTransform: "uppercase",
+												fontWeight: "500",
 											}}
 										>
-											ĐIỂM CÀNG LỚN - QUÀ CÀNG TO | SĂN
-											NGAY KẺO LỠ
+											Combo bắp nước khủng
 										</ThemedText>
+										<ThemedText
+											numberOfLines={2}
+											style={{
+												fontSize: 14,
+												opacity: 0.6,
+											}}
+										>
+											Ưu đãi đã khi xem phim dài, combo 1
+											với giá chỉ 70K gồm 1 nước lớn + 1
+											bắp lớn (chỉ áp dụng với nước uống ,
+											Pepsi, 7UP, Mirinda)
+										</ThemedText>
+									</View>
+									<View style={{ flexDirection: "row" }}>
 										<CustomTouchableOpacity
 											style={{
 												backgroundColor:
@@ -190,7 +187,7 @@ const HomeScreen = () => {
 												justifyContent: "center",
 												alignItems: "center",
 												borderRadius: 1000,
-												width: 50,
+												paddingHorizontal: 20,
 											}}
 										>
 											<Text
@@ -199,175 +196,14 @@ const HomeScreen = () => {
 													fontWeight: "500",
 												}}
 											>
-												見る
+												キャンペーンを見る
 											</Text>
 										</CustomTouchableOpacity>
 									</View>
 								</View>
-							)}
-						/>
-					</View>
-
-					{/* upcoming  */}
-					<View style={{ gap: 12 }}>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-								paddingHorizontal: Dimentions.appPadding,
-							}}
-						>
-							<ThemedText type="subtitle">上映予定</ThemedText>
-							<ThemedText type="link">すべて</ThemedText>
-						</View>
-						<FlatList
-							data={Array(5).fill(Array(5).fill(null))}
-							horizontal
-							contentContainerStyle={{
-								paddingLeft: Dimentions.appPadding,
-								gap: 15,
-							}}
-							keyExtractor={(item, index) => index.toString()}
-							showsHorizontalScrollIndicator={false}
-							renderItem={({ item, index }) => (
-								<View style={{ width: itemWidth }}>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/temp/-uploaded-phim_yeu-nham_cr_250x350.jpg",
-										}}
-										style={{
-											width: itemWidth,
-											aspectRatio: "3/4.2",
-											borderRadius: 5,
-										}}
-									/>
-									<ThemedText
-										type="defaultSemiBold"
-										style={{ marginTop: 6, fontSize: 14 }}
-										numberOfLines={2}
-									>
-										{`Crazy Rich Asians (2019)`}
-									</ThemedText>
-									<CustomTouchableOpacity
-										style={{
-											backgroundColor: Colors.dark.tint,
-											height: 34,
-											justifyContent: "center",
-											alignItems: "center",
-											borderRadius: 1000,
-											marginTop: 8,
-										}}
-									>
-										<ThemedText
-											style={{
-												fontSize: 13,
-												color: "white",
-												fontWeight: "500",
-											}}
-										>
-											チケットを購入
-										</ThemedText>
-									</CustomTouchableOpacity>
-								</View>
-							)}
-						/>
-					</View>
-
-					{/* member sale  */}
-					<View style={{ gap: 12 }}>
-						<View
-							style={{
-								flexDirection: "row",
-								alignItems: "center",
-								justifyContent: "space-between",
-								paddingHorizontal: Dimentions.appPadding,
-							}}
-						>
-							<ThemedText type="subtitle">
-								キャンペーン
-							</ThemedText>
-							<ThemedText type="link">すべて</ThemedText>
-						</View>
-						<FlatList
-							data={Array(3).fill(null)}
-							horizontal
-							contentContainerStyle={{
-								paddingLeft: Dimentions.appPadding,
-								gap: 15,
-							}}
-							showsHorizontalScrollIndicator={false}
-							keyExtractor={(item, index) => index.toString()}
-							renderItem={({ item, index }) => (
-								<View
-									style={{ width: campainItemWidth, gap: 10 }}
-								>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/uploaded/khuyen-mai-uu-dai/uu%20dai%20com%20bo%201%20venus%20cinema%20hoa%20binh-01.jpg",
-										}}
-										style={{
-											width: campainItemWidth,
-											aspectRatio: "2/1.35",
-											borderRadius: 5,
-										}}
-									/>
-									<View
-										style={{
-											gap: 10,
-										}}
-									>
-										<View style={{ flex: 1 }}>
-											<ThemedText
-												numberOfLines={2}
-												style={{
-													textTransform: "uppercase",
-													fontWeight: "500",
-												}}
-											>
-												Combo bắp nước khủng
-											</ThemedText>
-											<ThemedText
-												numberOfLines={2}
-												style={{
-													fontSize: 14,
-													opacity: 0.6,
-												}}
-											>
-												Ưu đãi đã khi xem phim dài,
-												combo 1 với giá chỉ 70K gồm 1
-												nước lớn + 1 bắp lớn (chỉ áp
-												dụng với nước uống , Pepsi, 7UP,
-												Mirinda)
-											</ThemedText>
-										</View>
-										<View style={{ flexDirection: "row" }}>
-											<CustomTouchableOpacity
-												style={{
-													backgroundColor:
-														Colors.dark.tint,
-													height: 34,
-													justifyContent: "center",
-													alignItems: "center",
-													borderRadius: 1000,
-													paddingHorizontal: 20,
-												}}
-											>
-												<Text
-													style={{
-														color: "white",
-														fontWeight: "500",
-													}}
-												>
-													キャンペーンを見る
-												</Text>
-											</CustomTouchableOpacity>
-										</View>
-									</View>
-								</View>
-							)}
-						/>
-					</View>
+							</View>
+						}
+					/>
 
 					<View style={{ opacity: 0.5, marginTop: 30 }}>
 						<ThemedText

@@ -1,4 +1,4 @@
-import { View, Text, Image, Modal } from "react-native";
+import { View, Modal } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
@@ -9,9 +9,9 @@ import ImageViewer from "react-native-image-zoom-viewer";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
+import CustomImageViewer from "@/components/custom/CustomImageViewer";
 
 const TicketPriceScreen = () => {
-	const insets = useSafeAreaInsets();
 	const [imageModal, setImageModal] = useState<boolean>(false);
 
 	const priceImageUri =
@@ -29,6 +29,7 @@ const TicketPriceScreen = () => {
 				flex: 1,
 				paddingHorizontal: Dimentions.appPadding,
 				paddingTop: 20,
+				backgroundColor: Colors["dark"].backgroundSecondary,
 			}}
 		>
 			<View style={{ marginBottom: 16 }}>
@@ -40,7 +41,7 @@ const TicketPriceScreen = () => {
 						type="title"
 						style={{ fontSize: 26, lineHeight: 36, flex: 1 }}
 					>
-						Bảng Giá Vé Rạp Venus Cinema Hải Dương
+						Nội dung quy 
 					</ThemedText>
 				</View>
 				<ThemedText
@@ -63,45 +64,17 @@ const TicketPriceScreen = () => {
 						width={
 							Dimentions.window.width - Dimentions.appPadding * 2
 						}
-                        style={{backgroundColor: Colors.dark.input}}
+						style={{ backgroundColor: Colors.dark.input }}
 						source={{
 							uri: "https://www.venuscinema.vn/uploaded/bang-gia-ve-rap-venus-hai-duong-2025.jpg",
 						}}
 					/>
 				</Pressable>
-				<Modal
+				<CustomImageViewer
+					images={images}
 					visible={imageModal}
-					transparent={true}
-					animationType="fade"
-				>
-					<ImageViewer
-						imageUrls={images}
-						enableSwipeDown
-						onCancel={() => setImageModal(false)}
-						renderIndicator={() => <></>}
-						renderHeader={() => (
-							<View
-								style={{
-									position: "absolute",
-									top: insets.top + 10,
-									left: 20,
-									zIndex: 100,
-								}}
-							>
-								<CustomTouchableOpacity
-									onPress={() => setImageModal(false)}
-								>
-									<AntDesign
-										name="close"
-										color="white"
-										size={25}
-										style={{ opacity: 0.8 }}
-									/>
-								</CustomTouchableOpacity>
-							</View>
-						)}
-					/>
-				</Modal>
+					setIsVisible={setImageModal}
+				/>
 			</>
 
 			<View style={{ paddingBottom: 50, marginTop: 20 }}>
