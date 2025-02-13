@@ -14,6 +14,7 @@ import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import FormLabel from "@/components/label/FormLabel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import FormInput from "@/components/input/FormInput";
+import { Styles } from "@/constants/Styles";
 
 const ContactScreen = () => {
 	const contactSheetRef = useRef<ActionSheetRef>(null);
@@ -134,19 +135,9 @@ const ContactScreen = () => {
 			{/* actions sheet  */}
 			<ActionSheet
 				ref={contactSheetRef}
-				containerStyle={{
-					borderTopLeftRadius: 20,
-					borderTopRightRadius: 20,
-					backgroundColor: Colors.dark.backgroundSecondary,
-					paddingBottom: insets.bottom + 10,
-					paddingHorizontal: Dimentions.appPadding,
-				}}
+				containerStyle={Styles.actionSheetContainer}
 				gestureEnabled
-				indicatorStyle={{
-					backgroundColor: "white",
-					opacity: 0.5,
-					height: 4,
-				}}
+				indicatorStyle={Styles.actionSheetIndicator}
 			>
 				<View style={{ gap: 12, paddingTop: 10 }}>
 					<View>

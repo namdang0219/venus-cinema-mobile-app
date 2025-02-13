@@ -1,5 +1,5 @@
-import { View, Text, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, Image, Linking, Alert } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Colors, tintColor } from "@/constants/Colors";
@@ -10,6 +10,14 @@ import { Pressable, ScrollView } from "react-native-gesture-handler";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 import CustomImageViewer from "@/components/custom/CustomImageViewer";
+import ActionSheet, {
+	ActionSheetRef,
+	FlatList,
+} from "react-native-actions-sheet";
+import { Styles } from "@/constants/Styles";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { useItemWidth } from "@/hooks/useItemWidth";
+import { openBrowserAsync } from "expo-web-browser";
 
 // STATUS : 上映中 | 公開予定 | 上映終了
 
@@ -19,6 +27,8 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const width = Dimentions.window.width;
 	const [showPoster, setShowPoster] = useState<boolean>(false);
 
+	const coverUri =
+		"https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg";
 	const posterUri =
 		"https://riocinemas.vn//Areas/Admin/Content/Fileuploads/images/poster%20web/2025/T1/n_h_n_b_c_t_-teaser_poster_kt_facebook_-dkkc_mung_1_tet%20(1).jpg";
 
@@ -31,6 +41,49 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 		});
 	}, []);
 
+	// trailer
+	const trailerUrl = "https://www.youtube.com/watch?v=-iX9mj7AsOg";
+
+	const openTrailerUrl = useCallback(async () => {
+		Alert.alert(
+			"サイトを開きますか？",
+			"アプリケーション内のブラウザを使用して使用してサイトをアクセスしてもよろしですか？",
+			[
+				{
+					text: "キャンセル",
+					style: "cancel",
+				},
+				{
+					text: "開く",
+					style: "default",
+					onPress: async () => await openBrowserAsync(trailerUrl),
+				},
+			]
+		);
+	}, [trailerUrl]);
+
+	const featureButtons: { label: string; action: () => void }[] = [
+		{ label: "予告編", action: openTrailerUrl },
+		{ label: "スケジュール", action: showScheduleSheet },
+		{ label: "チケット", action: () => null },
+	];
+
+	// Schedule Action Sheet handler
+	const scheduleSheetRef = useRef<ActionSheetRef>(null);
+
+	function showScheduleSheet() {
+		scheduleSheetRef.current?.show();
+	}
+
+	// Date Picker handler
+	const [selectedDate, setSelectedDate] = useState(new Date());
+	console.log("🚀 ~ MovieDetail ~ selectedDate:", selectedDate);
+	const today = new Date();
+	const maxDate = new Date();
+	maxDate.setDate(today.getDate() + 5);
+
+	const itemWidth = useItemWidth(10, 4, Dimentions.appPadding);
+
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{
@@ -40,7 +93,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 			headerImage={
 				<Image
 					source={{
-						uri: "https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg",
+						uri: coverUri,
 					}}
 					style={{ height: (width / 16) * 8 + top }}
 				/>
@@ -185,14 +238,144 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 					listItems={Array(5).fill(null)}
 				/>
 			</View>
+
+			<ActionSheet
+				ref={scheduleSheetRef}
+				gestureEnabled
+				containerStyle={Styles.actionSheetContainer}
+				indicatorStyle={Styles.actionSheetIndicator}
+			>
+				<View style={{ paddingTop: 10 }}>
+					<View style={{ alignItems: "center" }}>
+						<ThemedText
+							type="subtitle"
+							style={{
+								color: Colors["dark"].tint,
+								marginBottom: 20,
+							}}
+						>
+							上映スケジュール
+						</ThemedText>
+
+						<Image
+							source={{ uri: posterUri }}
+							style={{
+								width: width / 3,
+								aspectRatio: "2/3",
+								marginBottom: 14,
+							}}
+						/>
+						<ThemedText
+							style={{
+								textTransform: "uppercase",
+								fontSize: 18,
+								fontWeight: "500",
+								paddingHorizontal: width / 8,
+								textAlign: "center",
+							}}
+							numberOfLines={2}
+						>
+							Nụ hôn bạc tỷ (2025)
+						</ThemedText>
+					</View>
+
+					{/* Schedule area  */}
+					<View
+						style={{
+							marginTop: 14,
+						}}
+					>
+						<View
+							style={{
+								marginHorizontal: "auto",
+							}}
+						>
+							<RNDateTimePicker
+								value={selectedDate}
+								display="default"
+								mode="date"
+								minimumDate={today}
+								maximumDate={maxDate}
+								onChange={(event, date) => {
+									if (date) setSelectedDate(date);
+								}}
+							/>
+						</View>
+						<View>
+							<FlatList
+								data={Array(6).fill(null)}
+								numColumns={4}
+								contentContainerStyle={{
+									gap: 10,
+									marginTop: 20,
+								}}
+								columnWrapperStyle={{
+									gap: 10,
+								}}
+								keyExtractor={(item, index) => index.toString()}
+								renderItem={({ item, index }) => (
+									<View
+										style={{
+											width: itemWidth,
+											borderWidth: 1,
+											borderColor: Colors["dark"].icon,
+										}}
+									>
+										<View
+											style={{
+												backgroundColor:
+													Colors["dark"].input,
+												height: 32,
+												justifyContent: "center",
+												alignItems: "center",
+											}}
+										>
+											<ThemedText>9:00</ThemedText>
+										</View>
+										<View
+											style={{
+												height: 32,
+												justifyContent: "center",
+												alignItems: "center",
+											}}
+										>
+											<ThemedText
+												style={{ fontSize: 12 }}
+											>
+												2D (PhụĐề)
+											</ThemedText>
+										</View>
+									</View>
+								)}
+							/>
+						</View>
+					</View>
+
+					<CustomTouchableOpacity
+						style={{
+							marginTop: 45,
+							backgroundColor: Colors.dark.tint,
+							height: 48,
+							justifyContent: "center",
+							alignItems: "center",
+							borderRadius: 10,
+						}}
+						onPress={() => scheduleSheetRef.current?.hide()}
+					>
+						<Text
+							style={{
+								fontSize: 18,
+								fontWeight: "500",
+								color: "white",
+							}}
+						>
+							チケット購入へ
+						</Text>
+					</CustomTouchableOpacity>
+				</View>
+			</ActionSheet>
 		</ParallaxScrollView>
 	);
 };
-
-const featureButtons: { label: string; action: () => void }[] = [
-	{ label: "予告編", action: () => null },
-	{ label: "スケジュール", action: () => null },
-	{ label: "チケット", action: () => null },
-];
 
 export default MovieDetail;

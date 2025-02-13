@@ -76,16 +76,20 @@ const HomeScreen = () => {
 						listItems={Array(3).fill(null)}
 						customItem={
 							<View style={{ width: campainItemWidth, gap: 10 }}>
-								<Image
-									source={{
-										uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
-									}}
-									style={{
-										width: campainItemWidth,
-										aspectRatio: "2/0.95",
-										borderRadius: 5,
-									}}
-								/>
+								<CustomTouchableOpacity
+									onPress={() => push("/campaign/1")}
+								>
+									<Image
+										source={{
+											uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
+										}}
+										style={{
+											width: campainItemWidth,
+											aspectRatio: "2/0.95",
+											borderRadius: 5,
+										}}
+									/>
+								</CustomTouchableOpacity>
 								<View
 									style={{
 										flexDirection: "row",
@@ -133,7 +137,7 @@ const HomeScreen = () => {
 						listItems={Array(5).fill(5)}
 					/>
 
-					{/* member sale  */}
+					{/* sale  */}
 					<HorizontalListLayout
 						title="キャンペーン"
 						rightButtonAction={() => {}}
