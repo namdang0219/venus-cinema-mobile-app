@@ -115,6 +115,7 @@ const HomeScreen = () => {
 											borderRadius: 1000,
 											width: 50,
 										}}
+										onPress={() => push("/campaign/1")}
 									>
 										<Text
 											style={{
