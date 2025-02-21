@@ -6,5 +6,6 @@ export const Dimentions = {
 		height: Dimensions.get("window").height,
 	},
 	headerHeight: 50,
-    appPadding: 16
+	appPadding: 16,
+	inputHeight: 45,
 };

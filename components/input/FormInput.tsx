@@ -2,6 +2,7 @@ import { View, Text, TextInputProps, StyleSheet } from "react-native";
 import React, { FC, PropsWithChildren } from "react";
 import { TextInput } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
+import { Dimentions } from "@/constants/Dimentions";
 
 const FormInput: FC<PropsWithChildren & TextInputProps> = ({
 	children,
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 	defaultStyle: {
 		backgroundColor: Colors.dark.input,
 		paddingHorizontal: 12,
-		paddingVertical: 12,
+		height: Dimentions.inputHeight,
 		borderRadius: 8,
 		color: Colors.dark.text,
 	},

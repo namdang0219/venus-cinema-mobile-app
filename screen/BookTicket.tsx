@@ -1,11 +1,12 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { Dimensions, Image, Modal, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { Colors } from "@/constants/Colors";
 import {
 	AntDesign,
 	Feather,
+	Fontisto,
 	Ionicons,
 	MaterialCommunityIcons,
 } from "@expo/vector-icons";
@@ -14,13 +15,27 @@ import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { Styles } from "@/constants/Styles";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import Button from "@/components/button/Button";
+import { useRouter } from "expo-router";
+import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
+import { tintColor } from "../constants/Colors";
+import { Dimentions } from "@/constants/Dimentions";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import FormLabel from "@/components/label/FormLabel";
+import FormInput from "@/components/input/FormInput";
+import LottieView from "lottie-react-native";
+
+const { width, height } = Dimensions.get("screen");
 
 const BookTicket = ({ movieId }: { movieId: string }) => {
 	const tintColor = Colors["dark"].tint;
 	const [activeStep, setActiveStep] = useState<number>(0);
+	const { push, replace } = useRouter();
+	const insets = useSafeAreaInsets();
 
-	const rows = ["A", "B", "C", "D", "E"]; // Danh sách hàng ghế
-	const seatsPerRow = 12; // Số ghế mỗi hàng
+	const paymentSheetRef = useRef<ActionSheetRef>(null);
+
+	const rows = ["A", "B", "C", "D", "E"];
+	const seatsPerRow = 12;
 
 	const generateSeats = () => {
 		return rows.map((row) => ({
@@ -41,6 +56,8 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 			row.seats.filter((seat) => seat.isSelected).map((seat) => seat.id)
 		);
 	};
+
+	const [addCardModalOpen, setAddCardModalOpen] = useState<boolean>(false);
 
 	const toggleSeatSelection = (row: string, seatNumber: number) => {
 		setSeatsData((prevSeats) =>
@@ -76,6 +93,57 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 		{ status: "選択済み", color: tintColor },
 		{ status: "選択不可", color: "#374151" },
 	];
+
+	const [selectingCard, setSelectingCard] = useState<number | null>(
+		cardInfos.length > 0 ? 0 : null
+	);
+
+	const [paying, setPaying] = useState<boolean>(false);
+
+	const [cardNumber, setCardNumber] = useState<string>();
+
+	const [cvv, setCvv] = useState<string>("");
+
+	const [expirationDate, setExpirationDate] = useState<string>("");
+
+	const handleTextChange = (text: string) => {
+		let cleanedText = text.replace(/[^0-9]/g, "");
+
+		if (cleanedText.length > 2) {
+			cleanedText = cleanedText.slice(0, 2) + "/" + cleanedText.slice(2);
+		}
+
+		if (cleanedText.length <= 5) {
+			setExpirationDate(cleanedText);
+		}
+	};
+
+	const animationRef = useRef<LottieView>(null);
+
+	const handlePayment = () => {
+		setPaying(true);
+		setTimeout(() => {
+			setPaying(false);
+			setSuccessModalOpen(true);
+		}, 1000);
+	};
+
+	// success modal
+	const [successModalOpen, setSuccessModalOpen] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (successModalOpen) {
+			setTimeout(() => {
+				animationRef.current?.play(0, 45);
+			}, 200);
+		} else {
+			animationRef.current?.reset();
+		}
+
+		return () => {
+			animationRef.current?.reset();
+		};
+	}, [successModalOpen]);
 
 	return (
 		<View
@@ -470,16 +538,13 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 								fontSize: 14,
 							}}
 						>
-							内容を確認してから、お支払い画面に進んでください
+							内容を確認してから、お支払いしてください
 						</ThemedText>
 
 						<View
 							style={[
 								{
 									marginTop: 20,
-									borderBottomWidth: StyleSheet.hairlineWidth,
-									borderBottomColor: Colors["dark"].icon,
-									paddingBottom: 20,
 								},
 							]}
 						>
@@ -657,7 +722,15 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 						</View>
 
 						{/* total money  */}
-						<View style={{ flexDirection: "row", marginTop: 18 }}>
+						<View
+							style={{
+								flexDirection: "row",
+								marginTop: 18,
+								borderTopWidth: StyleSheet.hairlineWidth,
+								borderTopColor: Colors["dark"].icon,
+								paddingTop: 20,
+							}}
+						>
 							<Text
 								style={{
 									fontSize: 18,
@@ -685,9 +758,468 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 								bottom: 20,
 								width: "100%",
 							}}
+							onPress={() => paymentSheetRef.current?.show()}
 						>
-							お支払い画面へ
+							お支払いへ
 						</Button>
+
+						<ActionSheet
+							ref={paymentSheetRef}
+							gestureEnabled
+							containerStyle={Styles.actionSheetContainer}
+							indicatorStyle={Styles.actionSheetIndicator}
+						>
+							<View>
+								<Text
+									style={{
+										fontSize: 24,
+										color: Colors["dark"].text,
+										textAlign: "center",
+										marginTop: 10,
+										fontWeight: "500",
+									}}
+								>
+									お支払い
+								</Text>
+
+								<ThemedText
+									style={{
+										textAlign: "center",
+										color: "white",
+										opacity: 0.5,
+										fontSize: 14,
+										marginVertical: 10,
+									}}
+								>
+									カードを選択してください
+								</ThemedText>
+
+								<View>
+									{/* cart choices  */}
+									<View style={{ gap: 10 }}>
+										{cardInfos.length > 0 &&
+											cardInfos.map((card, index) => (
+												<Pressable
+													key={index}
+													style={{
+														borderWidth: 1,
+														borderColor:
+															selectingCard ===
+															index
+																? tintColor
+																: Colors["dark"]
+																		.icon,
+														borderRadius: 20,
+														padding: 16,
+														minHeight: 80,
+														flexDirection: "row",
+														alignItems: "center",
+														justifyContent:
+															"space-between",
+														backgroundColor:
+															selectingCard ===
+															index
+																? tintColor
+																: "transparent",
+													}}
+													onPress={() =>
+														setSelectingCard(index)
+													}
+												>
+													<View
+														style={{
+															flex: 1,
+															flexDirection:
+																"row",
+															alignItems:
+																"center",
+															gap: 10,
+														}}
+													>
+														<Fontisto
+															name={card.brand}
+															size={50}
+															color={
+																selectingCard ===
+																index
+																	? "white"
+																	: Colors[
+																			"dark"
+																	  ].icon
+															}
+														/>
+														<View>
+															<ThemedText
+																style={{
+																	fontSize: 18,
+																	fontWeight:
+																		"600",
+																	color:
+																		selectingCard ===
+																		index
+																			? "white"
+																			: Colors[
+																					"dark"
+																			  ]
+																					.text,
+																}}
+															>
+																{card.type ==
+																"credit"
+																	? "クレジット"
+																	: "デビット"}
+															</ThemedText>
+															<ThemedText
+																style={{
+																	fontSize: 16,
+																	color:
+																		selectingCard ===
+																		index
+																			? "white"
+																			: Colors[
+																					"dark"
+																			  ]
+																					.icon,
+																}}
+															>
+																{`********${card.number
+																	.toString()
+																	.slice(8)}`}
+															</ThemedText>
+														</View>
+													</View>
+
+													<View
+														style={{
+															width: 20,
+															aspectRatio: "1/1",
+															borderColor:
+																selectingCard ===
+																index
+																	? "white"
+																	: Colors[
+																			"dark"
+																	  ].icon,
+															borderWidth: 2,
+															borderRadius: 100,
+															padding: 2,
+														}}
+													>
+														{selectingCard ===
+															index && (
+															<View
+																style={{
+																	flex: 1,
+																	backgroundColor:
+																		"white",
+																	borderRadius: 100,
+																}}
+															/>
+														)}
+													</View>
+												</Pressable>
+											))}
+
+										<CustomTouchableOpacity
+											style={{
+												marginHorizontal: "auto",
+												marginVertical: 5,
+												flexDirection: "row",
+												justifyContent: "center",
+												alignItems: "center",
+												gap: 6,
+											}}
+											onPress={() =>
+												setAddCardModalOpen(true)
+											}
+										>
+											<Feather
+												name="plus-circle"
+												size={16}
+												color={tintColor}
+											/>
+											<ThemedText
+												style={{ color: tintColor }}
+											>
+												カードを追加
+											</ThemedText>
+										</CustomTouchableOpacity>
+									</View>
+
+									{/* total money  */}
+									<View
+										style={{
+											flexDirection: "row",
+											marginTop: 18,
+											borderTopWidth:
+												StyleSheet.hairlineWidth,
+											borderTopColor: Colors["dark"].icon,
+											paddingTop: 20,
+										}}
+									>
+										<Text
+											style={{
+												fontSize: 18,
+												marginLeft: "auto",
+												color: Colors["dark"].text,
+											}}
+										>
+											会計：
+											<Text
+												style={{
+													fontSize: 32,
+													fontWeight: "500",
+													color: tintColor,
+												}}
+											>
+												¥1000
+											</Text>
+										</Text>
+									</View>
+								</View>
+
+								<View style={{ marginTop: 60, gap: 5 }}>
+									<ThemedText
+										style={{
+											textAlign: "center",
+											color: "white",
+											opacity: 0.5,
+											fontSize: 14,
+											marginVertical: 10,
+										}}
+									>
+										全ての情報を確認した上で、決済してください
+									</ThemedText>
+									<Button
+										style={{ marginTop: 0 }}
+										onPress={handlePayment}
+										loading={paying}
+									>
+										決済
+									</Button>
+								</View>
+							</View>
+
+							{/* add card modal  */}
+							<Modal
+								visible={addCardModalOpen}
+								animationType="slide"
+								presentationStyle="fullScreen"
+							>
+								<View
+									style={{
+										flex: 1,
+										backgroundColor:
+											Colors["dark"].backgroundSecondary,
+										paddingTop: insets.top,
+									}}
+								>
+									{/* header  */}
+									<View
+										style={{
+											flexDirection: "row",
+											alignItems: "center",
+											justifyContent: "space-between",
+											paddingHorizontal:
+												Dimentions.appPadding,
+										}}
+									>
+										<CustomTouchableOpacity
+											style={{
+												width: 100,
+											}}
+											onPress={() =>
+												setAddCardModalOpen(false)
+											}
+										>
+											<ThemedText>キャンセル</ThemedText>
+										</CustomTouchableOpacity>
+										<ThemedText
+											style={{
+												fontSize: 18,
+												fontWeight: "600",
+											}}
+										>
+											カード追加
+										</ThemedText>
+										<CustomTouchableOpacity
+											style={{
+												width: 100,
+												flexDirection: "row",
+												justifyContent: "flex-end",
+											}}
+											onPress={() =>
+												setAddCardModalOpen(false)
+											}
+										>
+											<ThemedText
+												style={{
+													fontWeight: "600",
+													color: tintColor,
+												}}
+											>
+												追加
+											</ThemedText>
+										</CustomTouchableOpacity>
+									</View>
+
+									{/* body  */}
+									<View
+										style={{
+											padding: Dimentions.appPadding,
+											flex: 1,
+										}}
+									>
+										{/* card info  */}
+										<View style={{ gap: 20 }}>
+											<View>
+												<FormLabel>氏名</FormLabel>
+												<FormInput placeholder="カードの氏名" />
+											</View>
+											<View>
+												<FormLabel>
+													カード番号
+												</FormLabel>
+												<FormInput
+													placeholder="カード番号"
+													keyboardType="number-pad"
+													maxLength={12}
+													inputMode="numeric"
+													onChangeText={(text) => {
+														const value =
+															text.replace(
+																/[^0-9]/g,
+																""
+															);
+														setCardNumber(value);
+													}}
+													value={cardNumber}
+												/>
+											</View>
+											<View
+												style={{
+													flexDirection: "row",
+													gap: 20,
+												}}
+											>
+												<View style={{ flex: 1 }}>
+													<FormLabel>期限</FormLabel>
+													<FormInput
+														placeholder="MM/YY"
+														keyboardType="numeric"
+														maxLength={5}
+														value={expirationDate}
+														onChangeText={
+															handleTextChange
+														}
+													/>
+												</View>
+												<View style={{ flex: 1 }}>
+													<FormLabel>CVV</FormLabel>
+													<FormInput
+														placeholder="CVV"
+														keyboardType="numeric"
+														maxLength={3}
+														onChangeText={(text) =>
+															setCvv(
+																text.replace(
+																	/[^0-9]/g,
+																	""
+																)
+															)
+														}
+														value={cvv}
+													/>
+												</View>
+											</View>
+										</View>
+
+										{/* button  */}
+										<Button
+											style={{
+												marginTop: "auto",
+												marginBottom: 20,
+											}}
+											onPress={() =>
+												setAddCardModalOpen(false)
+											}
+										>
+											カードを追加
+										</Button>
+									</View>
+								</View>
+							</Modal>
+
+							{/* payment success modal  */}
+							<Modal
+								visible={successModalOpen}
+								animationType="fade"
+								presentationStyle="overFullScreen"
+								transparent
+							>
+								<View
+									style={{
+										flex: 1,
+										position: "relative",
+									}}
+								>
+									<View
+										style={{
+											position: "absolute",
+											inset: 0,
+											backgroundColor: "black",
+											opacity: 0.5,
+										}}
+									/>
+
+									{/* success box  */}
+									<View
+										style={{
+											width: width / 1.5,
+											aspectRatio: "1/1",
+											backgroundColor: "white",
+											borderRadius: 30,
+											top: "50%",
+											left: "50%",
+											transform: [
+												{ translateX: -width / 3 },
+												{ translateY: -width / 3 },
+											],
+											padding: 20,
+										}}
+									>
+										<LottieView
+											ref={animationRef}
+											loop={false}
+											source={require("./../assets/images/successAnimJson.json")}
+											style={{
+												width: width / 2.4,
+												aspectRatio: "1/1",
+												marginHorizontal: "auto",
+											}}
+										/>
+										<Button
+											style={{ marginTop: "auto" }}
+											onPress={() => {
+												setSuccessModalOpen(false);
+												paymentSheetRef.current?.hide();
+												replace("/myTickets");
+											}}
+										>
+											チケット画面へ
+										</Button>
+									</View>
+
+									{/* <Button
+										onPress={() =>
+											setSuccessModalOpen(false)
+										}
+									>
+										Close
+									</Button> */}
+								</View>
+							</Modal>
+						</ActionSheet>
 					</Animated.View>
 				</ProgressStep>
 			</ProgressSteps>
@@ -748,5 +1280,31 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 		</View>
 	);
 };
+
+const cardInfos: {
+	name: string;
+	number: number;
+	expiry: string;
+	cvc: number;
+	brand: "jcb" | "visa";
+	type: "credit" | "debit";
+}[] = [
+	{
+		name: "John Doe",
+		number: 111122220912,
+		expiry: "12/25",
+		cvc: 123,
+		brand: "jcb",
+		type: "debit",
+	},
+	{
+		name: "Alice Doe",
+		number: 444455551312,
+		expiry: "12/25",
+		cvc: 123,
+		brand: "visa",
+		type: "credit",
+	},
+];
 
 export default BookTicket;

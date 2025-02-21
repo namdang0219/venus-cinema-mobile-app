@@ -1,13 +1,18 @@
-import { Text } from "react-native";
+import { ActivityIndicator, Text } from "react-native";
 import React, { FC } from "react";
 import CustomTouchableOpacity from "../custom/CustomTouchableOpacity";
 import { Colors } from "@/constants/Colors";
 import { TouchableOpacityProps } from "react-native-gesture-handler";
 
-const Button: FC<TouchableOpacityProps> = ({
+type ButtonProps = {
+	loading?: boolean;
+};
+
+const Button: FC<TouchableOpacityProps & ButtonProps> = ({
 	onPress,
 	style,
 	children,
+	loading = false,
 	...props
 }) => {
 	return (
@@ -26,15 +31,19 @@ const Button: FC<TouchableOpacityProps> = ({
 			onPress={onPress}
 			{...props}
 		>
-			<Text
-				style={{
-					fontSize: 18,
-					fontWeight: "500",
-					color: "white",
-				}}
-			>
-				{children}
-			</Text>
+			{!loading ? (
+				<Text
+					style={{
+						fontSize: 18,
+						fontWeight: "500",
+						color: "white",
+					}}
+				>
+					{children}
+				</Text>
+			) : (
+				<ActivityIndicator color="white" />
+			)}
 		</CustomTouchableOpacity>
 	);
 };
