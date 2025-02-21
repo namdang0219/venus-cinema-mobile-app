@@ -68,6 +68,8 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 											width: itemWidth,
 											aspectRatio: "3/4.2",
 											borderRadius: 5,
+											backgroundColor:
+												Colors["dark"].input,
 										}}
 									/>
 									<ThemedText

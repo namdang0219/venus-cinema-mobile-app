@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Colors, tintColor } from "@/constants/Colors";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Dimentions } from "@/constants/Dimentions";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
@@ -18,6 +18,7 @@ import { Styles } from "@/constants/Styles";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useItemWidth } from "@/hooks/useItemWidth";
 import { openBrowserAsync } from "expo-web-browser";
+import Button from "@/components/button/Button";
 
 // STATUS : 上映中 | 公開予定 | 上映終了
 
@@ -26,6 +27,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const { top } = useSafeAreaInsets();
 	const width = Dimentions.window.width;
 	const [showPoster, setShowPoster] = useState<boolean>(false);
+	const { push } = useRouter();
 
 	const coverUri =
 		"https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg";
@@ -65,7 +67,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const featureButtons: { label: string; action: () => void }[] = [
 		{ label: "予告編", action: openTrailerUrl },
 		{ label: "スケジュール", action: showScheduleSheet },
-		{ label: "チケット", action: () => null },
+		{ label: "チケット購入", action: () => push("/book/1") },
 	];
 
 	// Schedule Action Sheet handler
@@ -77,7 +79,6 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 
 	// Date Picker handler
 	const [selectedDate, setSelectedDate] = useState(new Date());
-	console.log("🚀 ~ MovieDetail ~ selectedDate:", selectedDate);
 	const today = new Date();
 	const maxDate = new Date();
 	maxDate.setDate(today.getDate() + 5);
@@ -351,27 +352,14 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						</View>
 					</View>
 
-					<CustomTouchableOpacity
-						style={{
-							marginTop: 45,
-							backgroundColor: Colors.dark.tint,
-							height: 48,
-							justifyContent: "center",
-							alignItems: "center",
-							borderRadius: 10,
+					<Button
+						onPress={() => {
+							scheduleSheetRef.current?.hide();
+							push("/book/1");
 						}}
-						onPress={() => scheduleSheetRef.current?.hide()}
 					>
-						<Text
-							style={{
-								fontSize: 18,
-								fontWeight: "500",
-								color: "white",
-							}}
-						>
-							チケット購入へ
-						</Text>
-					</CustomTouchableOpacity>
+						チケット購入へ
+					</Button>
 				</View>
 			</ActionSheet>
 		</ParallaxScrollView>

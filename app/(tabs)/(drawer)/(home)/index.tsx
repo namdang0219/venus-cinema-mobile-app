@@ -14,7 +14,6 @@ import { useRouter } from "expo-router";
 import DrawerHeader from "@/module/DrawerHeader";
 import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 
-const itemWidth = Dimentions.window.width / 2.6;
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
 
 const HomeScreen = () => {
@@ -140,21 +139,25 @@ const HomeScreen = () => {
 
 					{/* sale  */}
 					<HorizontalListLayout
-						title="キャンペーン"
+						title="セール"
 						rightButtonAction={() => {}}
 						listItems={Array(3).fill(null)}
 						customItem={
 							<View style={{ width: campainItemWidth, gap: 10 }}>
-								<Image
-									source={{
-										uri: "https://www.venuscinema.vn/uploaded/khuyen-mai-uu-dai/uu%20dai%20com%20bo%201%20venus%20cinema%20hoa%20binh-01.jpg",
-									}}
-									style={{
-										width: campainItemWidth,
-										aspectRatio: "2/1.35",
-										borderRadius: 5,
-									}}
-								/>
+								<CustomTouchableOpacity
+									onPress={() => push("/campaign/1")}
+								>
+									<Image
+										source={{
+											uri: "https://www.venuscinema.vn/uploaded/khuyen-mai-uu-dai/uu%20dai%20com%20bo%201%20venus%20cinema%20hoa%20binh-01.jpg",
+										}}
+										style={{
+											width: campainItemWidth,
+											aspectRatio: "2/1.35",
+											borderRadius: 5,
+										}}
+									/>
+								</CustomTouchableOpacity>
 								<View
 									style={{
 										gap: 10,
@@ -194,6 +197,7 @@ const HomeScreen = () => {
 												borderRadius: 1000,
 												paddingHorizontal: 20,
 											}}
+											onPress={() => push("/campaign/1")}
 										>
 											<Text
 												style={{
