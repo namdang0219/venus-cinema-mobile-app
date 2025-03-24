@@ -2,8 +2,6 @@ import {
 	View,
 	useWindowDimensions,
 	Share,
-	Text,
-	StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useNavigation } from "expo-router";
@@ -15,7 +13,6 @@ import { AutoHeightImage } from "@/components/image/AutoHeightImage";
 import CustomImageViewer from "@/components/custom/CustomImageViewer";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { EvilIcons } from "@expo/vector-icons";
-import { ThemedText } from "@/components/ThemedText";
 import Markdown from "react-native-markdown-display";
 import useSWR from "swr";
 import { fetcher } from "@/utils/func/fetcher";

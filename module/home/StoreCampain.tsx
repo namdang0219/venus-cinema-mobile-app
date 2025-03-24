@@ -3,33 +3,54 @@ import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { Dimentions } from "@/constants/Dimentions";
+import { fetcher } from "@/utils/func/fetcher";
+import { CampaignType } from "@/utils/types/CampaignType";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Text, View } from "react-native";
+import useSWR from "swr";
 
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
 
 const StoreCampain = () => {
 	const { push } = useRouter();
 
+	const { data } = useSWR(
+		`${process.env.EXPO_PUBLIC_API_URL}/campaigns?populate[0]=poster&filters[type]=store`,
+		fetcher
+	);
+
+	const campainData: CampaignType[] = data?.data;
+
+	if (!campainData)
+		return (
+			<ThemedText style={{ paddingHorizontal: Dimentions.appPadding }}>
+				データが読み込めませんでした！
+			</ThemedText>
+		);
+
 	return (
 		<HorizontalListLayout
 			title="セール"
 			rightButtonAction={() => {}}
-			listItems={Array(3).fill(null)}
-			customItem={() => (
+			listItems={campainData}
+			customItem={(item: CampaignType) => (
 				<View style={{ width: campainItemWidth, gap: 10 }}>
-					<CustomTouchableOpacity onPress={() => push("/campaign/1")}>
-						<Image
-							source={{
-								uri: "https://www.venuscinema.vn/uploaded/khuyen-mai-uu-dai/uu%20dai%20com%20bo%201%20venus%20cinema%20hoa%20binh-01.jpg",
-							}}
-							style={{
-								width: campainItemWidth,
-								aspectRatio: "2/1.35",
-								borderRadius: 5,
-							}}
-						/>
+					<CustomTouchableOpacity
+						onPress={() => push(`/campaign/${item.documentId}`)}
+					>
+						{item?.poster.uri && (
+							<Image
+								source={{
+									uri: item?.poster.uri,
+								}}
+								style={{
+									width: campainItemWidth,
+									aspectRatio: "2/1.35",
+									borderRadius: 5,
+								}}
+							/>
+						)}
 					</CustomTouchableOpacity>
 					<View
 						style={{
@@ -44,7 +65,7 @@ const StoreCampain = () => {
 									fontWeight: "500",
 								}}
 							>
-								Combo bắp nước khủng
+								{item?.title}
 							</ThemedText>
 							<ThemedText
 								numberOfLines={2}
@@ -53,9 +74,7 @@ const StoreCampain = () => {
 									opacity: 0.6,
 								}}
 							>
-								Ưu đãi đã khi xem phim dài, combo 1 với giá chỉ
-								70K gồm 1 nước lớn + 1 bắp lớn (chỉ áp dụng với
-								nước uống , Pepsi, 7UP, Mirinda)
+								{item?.content}
 							</ThemedText>
 						</View>
 						<View style={{ flexDirection: "row" }}>
@@ -68,7 +87,9 @@ const StoreCampain = () => {
 									borderRadius: 1000,
 									paddingHorizontal: 20,
 								}}
-								onPress={() => push("/campaign/1")}
+								onPress={() =>
+									push(`/campaign/${item.documentId}`)
+								}
 							>
 								<Text
 									style={{
