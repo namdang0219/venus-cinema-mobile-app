@@ -19,6 +19,7 @@ import { ThemedText } from "@/components/ThemedText";
 import Markdown from "react-native-markdown-display";
 import useSWR from "swr";
 import { fetcher } from "@/utils/func/fetcher";
+import { CampaignType } from "@/utils/types/CampaignType";
 
 const CampaignScreen = () => {
 	const { campaignId } = useLocalSearchParams();
@@ -60,13 +61,13 @@ const CampaignScreen = () => {
 	}, []);
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/membership-campaigns/${campaignId}?populate[0]=image`,
+		`${process.env.EXPO_PUBLIC_API_URL}/campaigns/${campaignId}?populate[0]=poster`,
 		fetcher
 	);
 
 	if (!data) return <></>;
 
-	const campaignData = data?.data;
+	const campaignData: CampaignType = data?.data;
 
 	return (
 		<ScrollView
@@ -84,12 +85,12 @@ const CampaignScreen = () => {
 				<View style={{ marginVertical: 20 }}>
 					<Pressable onPress={() => setShowImage(true)}>
 						<AutoHeightImage
-							source={{ uri: campaignData?.image.uri }}
+							source={{ uri: campaignData?.poster.uri }}
 							width={width - Dimentions.appPadding * 2}
 						/>
 					</Pressable>
 					<CustomImageViewer
-						images={[{ url: campaignData?.image.uri }]}
+						images={[{ url: campaignData?.poster.uri }]}
 						visible={showImage}
 						setIsVisible={setShowImage}
 					/>
@@ -107,7 +108,7 @@ const CampaignScreen = () => {
 						},
 					}}
 				>
-					{campaignData?.content}
+					{campaignData?.content ?? 'データがありません！'}
 				</Markdown>
 			</View>
 		</ScrollView>

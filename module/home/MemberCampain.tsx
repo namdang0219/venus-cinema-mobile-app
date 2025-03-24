@@ -8,6 +8,7 @@ import { Colors } from "@/constants/Colors";
 import { Dimentions } from "@/constants/Dimentions";
 import { fetcher } from "@/utils/func/fetcher";
 import useSWR from "swr";
+import { CampaignType } from "@/utils/types/CampaignType";
 
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
 
@@ -15,27 +16,32 @@ const MemberCampain = () => {
 	const { push } = useRouter();
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/membership-campaigns`,
+		`${process.env.EXPO_PUBLIC_API_URL}/campaigns?populate[0]=poster`,
 		fetcher
 	);
 
-	const campainData = data?.data;
+	const campainData = data?.data as CampaignType[];
 
-	if (!campainData) return <></>;
+	if (!campainData)
+		return (
+			<ThemedText style={{ paddingHorizontal: Dimentions.appPadding }}>
+				データが読み込めませんでした！
+			</ThemedText>
+		);
 
 	return (
 		<HorizontalListLayout
 			title="会員キャンペーン"
 			rightButtonAction={() => {}}
 			listItems={campainData}
-			customItem={(item) => (
+			customItem={(item: CampaignType) => (
 				<View style={styles.container}>
 					<CustomTouchableOpacity
 						onPress={() => push(`/campaign/${item.documentId}`)}
 					>
 						<Image
 							source={{
-								uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
+								uri: item?.poster.uri,
 							}}
 							style={styles.banner}
 						/>
@@ -46,7 +52,7 @@ const MemberCampain = () => {
 						</ThemedText>
 						<CustomTouchableOpacity
 							style={styles.button}
-							onPress={() => push("/campaign/1")}
+							onPress={() => push(`/campaign/${item.documentId}`)}
 						>
 							<Text style={styles.buttonText}>見る</Text>
 						</CustomTouchableOpacity>
