@@ -1,14 +1,10 @@
-import { View, Modal } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import { Dimentions } from "@/constants/Dimentions";
 import { Colors } from "@/constants/Colors";
 import { AutoHeightImage } from "@/components/image/AutoHeightImage";
-import ImageViewer from "react-native-image-zoom-viewer";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
-import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import CustomImageViewer from "@/components/custom/CustomImageViewer";
 
 const TicketPriceScreen = () => {

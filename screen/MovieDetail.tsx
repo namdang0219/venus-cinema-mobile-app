@@ -29,19 +29,19 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const [showPoster, setShowPoster] = useState<boolean>(false);
 	const { push } = useRouter();
 
-	const coverUri =
-		"https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg";
-	const posterUri =
-		"https://riocinemas.vn//Areas/Admin/Content/Fileuploads/images/poster%20web/2025/T1/n_h_n_b_c_t_-teaser_poster_kt_facebook_-dkkc_mung_1_tet%20(1).jpg";
-
 	useEffect(() => {
 		setOptions({
 			headerTransparent: true,
 			headerTitle: "",
-			headerBackTitle: "戻る",
 			headerTintColor: "white",
+			headerBackButtonDisplayMode: "minimal"
 		});
 	}, []);
+
+	const coverUri =
+		"https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg";
+	const posterUri =
+		"https://riocinemas.vn//Areas/Admin/Content/Fileuploads/images/poster%20web/2025/T1/n_h_n_b_c_t_-teaser_poster_kt_facebook_-dkkc_mung_1_tet%20(1).jpg";
 
 	// trailer
 	const trailerUrl = "https://www.youtube.com/watch?v=-iX9mj7AsOg";

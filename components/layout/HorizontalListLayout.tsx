@@ -1,5 +1,5 @@
 import { View, Image } from "react-native";
-import React, { FC, ReactNode } from "react";
+import React, { FC, Fragment, ReactNode } from "react";
 import { Dimentions } from "@/constants/Dimentions";
 import { ThemedText } from "../ThemedText";
 import { FlatList } from "react-native-gesture-handler";
@@ -14,7 +14,7 @@ type HorizontalListLayoutProps = {
 	rightButton?: boolean;
 	rightButtonAction: () => void;
 	listItems: any[];
-	customItem?: ReactNode | null;
+	customItem?: (item: any) => React.ReactNode;
 };
 
 const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
@@ -22,7 +22,7 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 	rightButton = true,
 	rightButtonAction = () => {},
 	listItems = [],
-	customItem = null,
+	customItem,
 }) => {
 	const { push } = useRouter();
 
@@ -105,7 +105,7 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 								</CustomTouchableOpacity>
 							</View>
 						) : (
-							customItem
+							<>{customItem(item)}</>
 						)}
 					</>
 				)}

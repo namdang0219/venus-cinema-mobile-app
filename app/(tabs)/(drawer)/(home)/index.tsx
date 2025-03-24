@@ -1,11 +1,6 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StatusBar } from "react-native";
 import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import {
-	FlatList,
-	RefreshControl,
-	ScrollView,
-} from "react-native-gesture-handler";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/ThemedText";
 import { Dimentions } from "@/constants/Dimentions";
@@ -13,6 +8,7 @@ import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { useRouter } from "expo-router";
 import DrawerHeader from "@/module/DrawerHeader";
 import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
+import MemberCampain from "@/module/home/MemberCampain";
 
 const campainItemWidth = Dimentions.window.width - Dimentions.appPadding * 3;
 
@@ -29,8 +25,6 @@ const HomeScreen = () => {
 
 	return (
 		<>
-			<StatusBar style="light" />
-
 			<DrawerHeader />
 
 			<ScrollView
@@ -42,6 +36,7 @@ const HomeScreen = () => {
 					<RefreshControl
 						refreshing={refreshing}
 						onRefresh={onRefresh}
+						tintColor={"white"}
 					/>
 				}
 			>
@@ -69,66 +64,7 @@ const HomeScreen = () => {
 					/>
 
 					{/* member sale  */}
-					<HorizontalListLayout
-						title="会員キャンペーン"
-						rightButtonAction={() => {}}
-						listItems={Array(3).fill(null)}
-						customItem={
-							<View style={{ width: campainItemWidth, gap: 10 }}>
-								<CustomTouchableOpacity
-									onPress={() => push("/campaign/1")}
-								>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/temp/-uploaded-khuyen-mai-uu-dai_THE-THANH-VIEN-TICH-DIEM-DOI-QUA_cr_590x270.png",
-										}}
-										style={{
-											width: campainItemWidth,
-											aspectRatio: "2/0.95",
-											borderRadius: 5,
-										}}
-									/>
-								</CustomTouchableOpacity>
-								<View
-									style={{
-										flexDirection: "row",
-										gap: 10,
-									}}
-								>
-									<ThemedText
-										numberOfLines={2}
-										style={{
-											flex: 1,
-											textTransform: "uppercase",
-										}}
-									>
-										ĐIỂM CÀNG LỚN - QUÀ CÀNG TO | SĂN NGAY
-										KẺO LỠ
-									</ThemedText>
-									<CustomTouchableOpacity
-										style={{
-											backgroundColor: Colors.dark.tint,
-											height: 34,
-											justifyContent: "center",
-											alignItems: "center",
-											borderRadius: 1000,
-											width: 50,
-										}}
-										onPress={() => push("/campaign/1")}
-									>
-										<Text
-											style={{
-												color: "white",
-												fontWeight: "500",
-											}}
-										>
-											見る
-										</Text>
-									</CustomTouchableOpacity>
-								</View>
-							</View>
-						}
-					/>
+					<MemberCampain />
 
 					{/* upcoming  */}
 					<HorizontalListLayout
@@ -142,7 +78,7 @@ const HomeScreen = () => {
 						title="セール"
 						rightButtonAction={() => {}}
 						listItems={Array(3).fill(null)}
-						customItem={
+						customItem={() => (
 							<View style={{ width: campainItemWidth, gap: 10 }}>
 								<CustomTouchableOpacity
 									onPress={() => push("/campaign/1")}
@@ -211,7 +147,7 @@ const HomeScreen = () => {
 									</View>
 								</View>
 							</View>
-						}
+						)}
 					/>
 
 					<View style={{ opacity: 0.5, marginTop: 30 }}>
