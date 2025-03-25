@@ -58,7 +58,7 @@ const CampaignScreen = () => {
 	}, []);
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/campaigns/${campaignId}?populate[0]=poster`,
+		`${process.env.EXPO_PUBLIC_API_URL}/campaigns/${campaignId}?populate=poster`,
 		fetcher
 	);
 

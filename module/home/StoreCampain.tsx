@@ -16,7 +16,7 @@ const StoreCampain = () => {
 	const { push } = useRouter();
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/campaigns?populate[0]=poster&filters[type]=store`,
+		`${process.env.EXPO_PUBLIC_API_URL}/campaigns?populate=poster&filters[type]=store`,
 		fetcher
 	);
 

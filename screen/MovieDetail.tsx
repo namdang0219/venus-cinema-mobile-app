@@ -1,4 +1,4 @@
-import { View, Text, Image, Linking, Alert } from "react-native";
+import { View, Text, Image, Alert } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -19,8 +19,38 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useItemWidth } from "@/hooks/useItemWidth";
 import { openBrowserAsync } from "expo-web-browser";
 import Button from "@/components/button/Button";
+import { EvilIcons } from "@expo/vector-icons";
+import useSWR from "swr";
+import { fetcher } from "@/utils/func/fetcher";
+import { MovieType } from "@/utils/types/MovieType";
 
 // STATUS : 上映中 | 公開予定 | 上映終了
+
+function renderMovieStatus(status: MovieType["movie_status"]) {
+	switch (status) {
+		case "Now showing":
+			return "上映中";
+		case "Coming soon":
+			return "公開予定";
+		case "Finished":
+			return "終了";
+		default:
+			return "不明";
+	}
+}
+
+function renderMovieStatusBg(status: MovieType["movie_status"]) {
+	switch (status) {
+		case "Now showing":
+			return Colors['dark'].tint;
+		case "Coming soon":
+			return '#EC4899';
+		case "Finished":
+			return "#EF4444";
+		default:
+			return "不明";
+	}
+}
 
 const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const { setOptions } = useNavigation();
@@ -29,19 +59,27 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const [showPoster, setShowPoster] = useState<boolean>(false);
 	const { push } = useRouter();
 
+	const { data } = useSWR(
+		`${process.env.EXPO_PUBLIC_API_URL}/movies/qrgjkdevdpwczrjziz14cjxw?populate=*`,
+		fetcher
+	);
+
+	const movieDetail: MovieType = data?.data;
+
+	// set page header properties
 	useEffect(() => {
 		setOptions({
 			headerTransparent: true,
 			headerTitle: "",
 			headerTintColor: "white",
-			headerBackButtonDisplayMode: "minimal"
+			headerBackButtonDisplayMode: "minimal",
+			headerRight: () => (
+				<CustomTouchableOpacity>
+					<EvilIcons name="share-apple" size={30} color={"white"} />
+				</CustomTouchableOpacity>
+			),
 		});
 	}, []);
-
-	const coverUri =
-		"https://mtg.1cdn.vn/2025/02/02/b6d813ea-7a65-43b5-a04f-c72e4017cdf3.jpg";
-	const posterUri =
-		"https://riocinemas.vn//Areas/Admin/Content/Fileuploads/images/poster%20web/2025/T1/n_h_n_b_c_t_-teaser_poster_kt_facebook_-dkkc_mung_1_tet%20(1).jpg";
 
 	// trailer
 	const trailerUrl = "https://www.youtube.com/watch?v=-iX9mj7AsOg";
@@ -58,7 +96,8 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 				{
 					text: "開く",
 					style: "default",
-					onPress: async () => await openBrowserAsync(trailerUrl),
+					onPress: async () =>
+						await openBrowserAsync(movieDetail?.trailer),
 				},
 			]
 		);
@@ -85,6 +124,19 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 
 	const itemWidth = useItemWidth(10, 4, Dimentions.appPadding);
 
+	if (!data)
+		return (
+			<View
+				style={{
+					flex: 1,
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				<ThemedText>データが存在していません！</ThemedText>
+			</View>
+		);
+
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{
@@ -94,7 +146,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 			headerImage={
 				<Image
 					source={{
-						uri: coverUri,
+						uri: movieDetail?.banner.uri,
 					}}
 					style={{ height: (width / 16) * 8 + top }}
 				/>
@@ -118,7 +170,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						<Pressable onPress={() => setShowPoster(true)}>
 							<Image
 								source={{
-									uri: posterUri,
+									uri: movieDetail?.poster.uri,
 								}}
 								style={{
 									width: width / 3.5,
@@ -128,7 +180,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							/>
 						</Pressable>
 						<CustomImageViewer
-							images={[{ url: posterUri }]}
+							images={[{ url: movieDetail?.poster.uri }]}
 							visible={showPoster}
 							setIsVisible={setShowPoster}
 						/>
@@ -137,7 +189,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						{/* status  */}
 						<View
 							style={{
-								backgroundColor: Colors["dark"].tint,
+								backgroundColor: renderMovieStatusBg(movieDetail?.movie_status),
 								alignSelf: "flex-start",
 								paddingHorizontal: 8,
 								paddingVertical: 0,
@@ -152,7 +204,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 									lineHeight: 18,
 								}}
 							>
-								上映中
+								{renderMovieStatus(movieDetail?.movie_status)}
 							</ThemedText>
 						</View>
 						<ThemedText
@@ -163,19 +215,19 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							}}
 							numberOfLines={2}
 						>
-							Nụ hôn bạc tỷ (2025)
+							{movieDetail?.title}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Thể loại: Hài, Tình cảm
+							{movieDetail?.casts}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Ngày chiếu: 12/02/2025
+							Ngày chiếu: {movieDetail?.releaseDate.replaceAll("-", "/")}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Thời lượng: 120 phút
+							Thời lượng: {movieDetail?.duration} phút
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Ngôn ngữ: Tiếng Việt
+							Ngôn ngữ: {movieDetail?.language.name}
 						</ThemedText>
 					</View>
 				</View>
@@ -223,12 +275,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						marginBottom: 20,
 					}}
 				>
-					Câu chuyện xoay quanh Vân - cô gái bán bánh mì vô tình gặp
-					phải hai chàng trai trong một tai nạn nhỏ. Làm thế nào khi
-					tiếng sét ái tình đánh một lúc cả ba người? Liệu giữa một
-					chàng trai chững chạc, nam tính và một chàng trai đôi chút
-					ngông nghênh, cool ngầu - đâu sẽ là “Nụ Hôn Bạc Tỷ” của cô
-					gái xinh đẹp?
+					{movieDetail?.description}
 				</ThemedText>
 
 				{/* similar movie  */}
@@ -259,7 +306,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						</ThemedText>
 
 						<Image
-							source={{ uri: posterUri }}
+							source={{ uri: movieDetail?.poster.uri }}
 							style={{
 								width: width / 3,
 								aspectRatio: "2/3",

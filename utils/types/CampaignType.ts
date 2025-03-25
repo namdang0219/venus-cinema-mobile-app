@@ -1,5 +1,5 @@
 export type CampaignType = {
-	documentId: string;
+	documentId?: string;
 	title: string;
 	type: "membership" | "store";
 	content: string;
