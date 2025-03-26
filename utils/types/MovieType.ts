@@ -12,7 +12,7 @@ export type MovieType = {
 	};
 	genres: string[];
 	releaseDate: string;
-	movie_status: "Coming soon" | "Now showing" | "Finished";
+	movie_status: "ComingSoon" | "NowShowing" | "Finished";
 	duration: string;
 	language: { name: string };
 	casts: string;

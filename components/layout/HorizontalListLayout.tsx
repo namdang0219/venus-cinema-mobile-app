@@ -6,6 +6,7 @@ import { FlatList } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
+import { MovieType } from "@/utils/types/MovieType";
 
 const itemWidth = Dimentions.window.width / 2.6;
 
@@ -58,20 +59,24 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 						{!customItem ? (
 							<View style={{ width: itemWidth }}>
 								<CustomTouchableOpacity
-									onPress={() => push("/detail/1")}
+									onPress={() =>
+										push(`/detail/${item.documentId}`)
+									}
 								>
-									<Image
-										source={{
-											uri: "https://www.venuscinema.vn/temp/-uploaded-phim_yeu-nham_cr_250x350.jpg",
-										}}
-										style={{
-											width: itemWidth,
-											aspectRatio: "3/4.2",
-											borderRadius: 5,
-											backgroundColor:
-												Colors["dark"].input,
-										}}
-									/>
+									{item?.poster && (
+										<Image
+											source={{
+												uri: item?.poster.uri,
+											}}
+											style={{
+												width: itemWidth,
+												aspectRatio: "3/4.2",
+												borderRadius: 5,
+												backgroundColor:
+													Colors["dark"].input,
+											}}
+										/>
+									)}
 									<ThemedText
 										type="defaultSemiBold"
 										style={{
@@ -80,7 +85,9 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 										}}
 										numberOfLines={2}
 									>
-										{`Yêu nhầm bạn thân (2019)`}
+										{`${item?.title} (${new Date(
+											item?.releaseDate
+										).getFullYear()})`}
 									</ThemedText>
 								</CustomTouchableOpacity>
 								<CustomTouchableOpacity

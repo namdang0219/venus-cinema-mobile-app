@@ -9,6 +9,8 @@ import DrawerHeader from "@/module/DrawerHeader";
 import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 import MemberCampain from "@/module/home/MemberCampain";
 import StoreCampain from "@/module/home/StoreCampain";
+import NowShowing from "@/module/home/NowShowing";
+import Upcoming from "@/module/home/Upcoming";
 
 const HomeScreen = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -54,22 +56,14 @@ const HomeScreen = () => {
 						</View>
 					</View>
 
-					{/* playing  */}
-					<HorizontalListLayout
-						title="上映中"
-						rightButtonAction={() => {}}
-						listItems={Array(5).fill(Array(5))}
-					/>
+					{/* now showing  */}
+					<NowShowing />
 
 					{/* member campain  */}
 					<MemberCampain />
 
 					{/* upcoming  */}
-					<HorizontalListLayout
-						title="公開予定"
-						rightButtonAction={() => {}}
-						listItems={Array(5).fill(5)}
-					/>
+					<Upcoming />
 
 					{/* store campain  */}
 					<StoreCampain />

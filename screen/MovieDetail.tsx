@@ -23,14 +23,15 @@ import { EvilIcons } from "@expo/vector-icons";
 import useSWR from "swr";
 import { fetcher } from "@/utils/func/fetcher";
 import { MovieType } from "@/utils/types/MovieType";
+import NoData from "@/module/NoData";
 
 // STATUS : 上映中 | 公開予定 | 上映終了
 
 function renderMovieStatus(status: MovieType["movie_status"]) {
 	switch (status) {
-		case "Now showing":
+		case "NowShowing":
 			return "上映中";
-		case "Coming soon":
+		case "ComingSoon":
 			return "公開予定";
 		case "Finished":
 			return "終了";
@@ -41,10 +42,10 @@ function renderMovieStatus(status: MovieType["movie_status"]) {
 
 function renderMovieStatusBg(status: MovieType["movie_status"]) {
 	switch (status) {
-		case "Now showing":
-			return Colors['dark'].tint;
-		case "Coming soon":
-			return '#EC4899';
+		case "NowShowing":
+			return Colors["dark"].tint;
+		case "ComingSoon":
+			return "#EC4899";
 		case "Finished":
 			return "#EF4444";
 		default:
@@ -60,7 +61,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	const { push } = useRouter();
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/movies/qrgjkdevdpwczrjziz14cjxw?populate=*`,
+		`${process.env.EXPO_PUBLIC_API_URL}/movies/${movieId}?populate=*`,
 		fetcher
 	);
 
@@ -82,8 +83,6 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	}, []);
 
 	// trailer
-	const trailerUrl = "https://www.youtube.com/watch?v=-iX9mj7AsOg";
-
 	const openTrailerUrl = useCallback(async () => {
 		Alert.alert(
 			"サイトを開きますか？",
@@ -101,7 +100,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 				},
 			]
 		);
-	}, [trailerUrl]);
+	}, []);
 
 	const featureButtons: { label: string; action: () => void }[] = [
 		{ label: "予告編", action: openTrailerUrl },
@@ -124,18 +123,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 
 	const itemWidth = useItemWidth(10, 4, Dimentions.appPadding);
 
-	if (!data)
-		return (
-			<View
-				style={{
-					flex: 1,
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
-				<ThemedText>データが存在していません！</ThemedText>
-			</View>
-		);
+	if (!data) return <NoData />;
 
 	return (
 		<ParallaxScrollView
@@ -189,7 +177,9 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						{/* status  */}
 						<View
 							style={{
-								backgroundColor: renderMovieStatusBg(movieDetail?.movie_status),
+								backgroundColor: renderMovieStatusBg(
+									movieDetail?.movie_status
+								),
 								alignSelf: "flex-start",
 								paddingHorizontal: 8,
 								paddingVertical: 0,
@@ -221,7 +211,8 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							{movieDetail?.casts}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Ngày chiếu: {movieDetail?.releaseDate.replaceAll("-", "/")}
+							Ngày chiếu:{" "}
+							{movieDetail?.releaseDate.replaceAll("-", "/")}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
 							Thời lượng: {movieDetail?.duration} phút
