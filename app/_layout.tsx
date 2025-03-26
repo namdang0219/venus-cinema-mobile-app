@@ -50,7 +50,7 @@ export default function RootLayout() {
 							<Stack.Screen name="+not-found" />
 						</Stack>
 					</SheetProvider>
-					<StatusBar style="auto" />
+					<StatusBar barStyle='light-content' />
 				</ThemeProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>

@@ -1,20 +1,17 @@
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
 import { ThemedText } from "@/components/ThemedText";
-import { Dimentions } from "@/constants/Dimentions";
-import { useRouter } from "expo-router";
 import DrawerHeader from "@/module/DrawerHeader";
-import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 import MemberCampain from "@/module/home/MemberCampain";
 import StoreCampain from "@/module/home/StoreCampain";
 import NowShowing from "@/module/home/NowShowing";
 import Upcoming from "@/module/home/Upcoming";
+import MovieSlider from "@/module/home/MovieSlider";
 
 const HomeScreen = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const { push } = useRouter();
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
@@ -42,19 +39,7 @@ const HomeScreen = () => {
 			>
 				<View style={{ gap: 32, paddingBottom: 20 }}>
 					{/* movie slider  */}
-					<View>
-						<View>
-							<Image
-								source={{
-									uri: "https://i.ytimg.com/vi/Jo8puu4u2MI/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBdozwVsi7xeFzoMmWe5kWxbf2xrg",
-								}}
-								style={{
-									width: Dimentions.window.width,
-									aspectRatio: "16/10",
-								}}
-							/>
-						</View>
-					</View>
+					<MovieSlider />
 
 					{/* now showing  */}
 					<NowShowing />
