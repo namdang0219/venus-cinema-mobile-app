@@ -21,11 +21,11 @@ const FormInput: FC<PropsWithChildren & TextInputProps> = ({
 
 const styles = StyleSheet.create({
 	defaultStyle: {
-		backgroundColor: Colors.dark.input,
+		backgroundColor: Colors.input,
 		paddingHorizontal: 12,
 		height: Dimentions.inputHeight,
 		borderRadius: 8,
-		color: Colors.dark.text,
+		color: Colors.text,
 	},
 });
 

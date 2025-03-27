@@ -80,7 +80,7 @@ const StoreCampain = () => {
 						<View style={{ flexDirection: "row" }}>
 							<CustomTouchableOpacity
 								style={{
-									backgroundColor: Colors.dark.tint,
+									backgroundColor: Colors.tint,
 									height: 34,
 									justifyContent: "center",
 									alignItems: "center",

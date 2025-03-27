@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		textTransform: "uppercase",
 	},
 	button: {
-		backgroundColor: Colors.dark.tint,
+		backgroundColor: Colors.tint,
 		height: 34,
 		justifyContent: "center",
 		alignItems: "center",

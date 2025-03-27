@@ -1,5 +1,4 @@
 import { Text, type TextProps, StyleSheet } from "react-native";
-
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Colors } from "@/constants/Colors";
 
@@ -56,6 +55,6 @@ const styles = StyleSheet.create({
 	link: {
 		lineHeight: 30,
 		fontSize: 16,
-		color: Colors.dark.tint,
+		color: Colors.tint,
 	},
 });

@@ -10,7 +10,7 @@ const RuleScreen = () => {
 	return (
 		<ScrollView
 			style={{
-				backgroundColor: Colors["dark"].backgroundSecondary,
+				backgroundColor: Colors.backgroundSecondary,
 				paddingTop: 20,
 				paddingHorizontal: Dimentions.appPadding,
 			}}
@@ -18,7 +18,7 @@ const RuleScreen = () => {
 			<View style={{ marginBottom: 16 }}>
 				<View style={{ flexDirection: "row", gap: 14 }}>
 					<View
-						style={{ backgroundColor: Colors.dark.tint, width: 4 }}
+						style={{ backgroundColor: Colors.tint, width: 4 }}
 					/>
 					<ThemedText
 						type="title"
@@ -45,7 +45,7 @@ const RuleScreen = () => {
 				<Collapsible title="1. Xây dựng văn hóa văn minh tại rạp chiếu phim">
 					<ThemedText
 						style={{
-							backgroundColor: Colors["dark"].backgroundSecondary,
+							backgroundColor: Colors.backgroundSecondary,
 						}}
 					>
 						・Đến sớm trước giờ chiếu {`\n`}
@@ -59,7 +59,7 @@ const RuleScreen = () => {
 				<Collapsible title="2. Tại nơi gửi xe">
 					<ThemedText
 						style={{
-							backgroundColor: Colors["dark"].backgroundSecondary,
+							backgroundColor: Colors.backgroundSecondary,
 						}}
 					>
 						・Đề nghị quý khách làm thủ tục đầy đủ với đội an ninh
@@ -73,7 +73,7 @@ const RuleScreen = () => {
 				<Collapsible title="3. Tại quầy vé và quầy dịch vụ.">
 					<ThemedText
 						style={{
-							backgroundColor: Colors["dark"].backgroundSecondary,
+							backgroundColor: Colors.backgroundSecondary,
 						}}
 					>
 						・Xếp hàng mua theo thứ tự, không chen lấn xô đẩy. Nhân

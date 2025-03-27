@@ -11,7 +11,7 @@ const PostHeader: FC<PostHeaderProps> = ({ title }) => {
 	return (
 		<View style={{ flexDirection: "row", gap: 10 }}>
 			<View
-				style={{ width: 4, backgroundColor: Colors["dark"].tint }}
+				style={{ width: 4, backgroundColor: Colors.tint }}
 			></View>
 			<ThemedText
 				type="title"

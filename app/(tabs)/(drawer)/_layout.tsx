@@ -8,11 +8,11 @@ const Layout = () => {
 		<Drawer
 			screenOptions={{
 				drawerActiveBackgroundColor: "black",
-				drawerActiveTintColor: Colors["dark"].tint,
-				drawerInactiveTintColor: Colors["dark"].icon,
+				drawerActiveTintColor: Colors.tint,
+				drawerInactiveTintColor: Colors.icon,
 				drawerType: "slide",
 				drawerContentContainerStyle: {
-					backgroundColor: Colors["dark"].background,
+					backgroundColor: Colors.background,
 					flex: 1,
 				},
 				headerBackButtonDisplayMode: "minimal",

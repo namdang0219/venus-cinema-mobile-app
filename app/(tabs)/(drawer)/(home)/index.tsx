@@ -27,7 +27,7 @@ const HomeScreen = () => {
 			<ScrollView
 				style={{
 					flex: 1,
-					backgroundColor: Colors["dark"].backgroundSecondary,
+					backgroundColor: Colors.backgroundSecondary,
 				}}
 				refreshControl={
 					<RefreshControl

@@ -27,7 +27,7 @@ import LottieView from "lottie-react-native";
 const { width, height } = Dimensions.get("screen");
 
 const BookTicket = ({ movieId }: { movieId: string }) => {
-	const tintColor = Colors["dark"].tint;
+	const tintColor = Colors.tint;
 	const [activeStep, setActiveStep] = useState<number>(0);
 	const { push, replace } = useRouter();
 	const insets = useSafeAreaInsets();
@@ -149,7 +149,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 		<View
 			style={{
 				flex: 1,
-				backgroundColor: Colors["dark"].backgroundSecondary,
+				backgroundColor: Colors.backgroundSecondary,
 				position: "relative",
 			}}
 		>
@@ -195,8 +195,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 										style={{
 											flexDirection: "row",
 											gap: 18,
-											borderBottomColor:
-												Colors["dark"].icon,
+											borderBottomColor: Colors.icon,
 											borderBottomWidth:
 												StyleSheet.hairlineWidth,
 											paddingVertical: 20,
@@ -265,15 +264,11 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 												>
 													<Feather
 														name="clock"
-														color={
-															Colors["dark"].icon
-														}
+														color={Colors.icon}
 													/>
 													<Text
 														style={{
-															color: Colors[
-																"dark"
-															].icon,
+															color: Colors.icon,
 															fontSize: 12,
 														}}
 													>
@@ -307,17 +302,13 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 																width: 70,
 																borderWidth: 1,
 																borderColor:
-																	Colors[
-																		"dark"
-																	].icon,
+																	Colors.icon,
 															}}
 														>
 															<View
 																style={{
 																	backgroundColor:
-																		Colors[
-																			"dark"
-																		].input,
+																		Colors.input,
 																	height: 26,
 																	justifyContent:
 																		"center",
@@ -413,7 +404,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 							{/* screen  */}
 							<View
 								style={{
-									backgroundColor: Colors["dark"].input,
+									backgroundColor: Colors.input,
 									alignItems: "center",
 									justifyContent: "center",
 									height: 40,
@@ -423,9 +414,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 									marginBottom: 30,
 								}}
 							>
-								<ThemedText
-									style={{ color: Colors["dark"].icon }}
-								>
+								<ThemedText style={{ color: Colors.icon }}>
 									スクリーン
 								</ThemedText>
 							</View>
@@ -482,8 +471,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 															seat.isBooked
 																? "#374151"
 																: seat.isSelected
-																? Colors["dark"]
-																		.tint
+																? Colors.tint
 																: "#6B7280",
 														borderRadius: 5,
 													}}
@@ -612,11 +600,11 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 										>
 											<Feather
 												name="clock"
-												color={Colors["dark"].icon}
+												color={Colors.icon}
 											/>
 											<Text
 												style={{
-													color: Colors["dark"].icon,
+													color: Colors.icon,
 													fontSize: 12,
 												}}
 											>
@@ -638,11 +626,11 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 									<Ionicons
 										name="calendar-outline"
 										size={24}
-										color={Colors["dark"].icon}
+										color={Colors.icon}
 									/>
 									<Text
 										style={{
-											color: Colors["dark"].icon,
+											color: Colors.icon,
 											fontSize: 18,
 										}}
 									>
@@ -668,12 +656,12 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 									<MaterialCommunityIcons
 										name="movie-roll"
 										size={24}
-										color={Colors["dark"].icon}
+										color={Colors.icon}
 									/>
 
 									<Text
 										style={{
-											color: Colors["dark"].icon,
+											color: Colors.icon,
 											fontSize: 18,
 										}}
 									>
@@ -699,11 +687,11 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 									<MaterialCommunityIcons
 										name="car-seat"
 										size={24}
-										color={Colors["dark"].icon}
+										color={Colors.icon}
 									/>
 									<Text
 										style={{
-											color: Colors["dark"].icon,
+											color: Colors.icon,
 											fontSize: 18,
 										}}
 									>
@@ -727,7 +715,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 								flexDirection: "row",
 								marginTop: 18,
 								borderTopWidth: StyleSheet.hairlineWidth,
-								borderTopColor: Colors["dark"].icon,
+								borderTopColor: Colors.icon,
 								paddingTop: 20,
 							}}
 						>
@@ -735,7 +723,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 								style={{
 									fontSize: 18,
 									marginLeft: "auto",
-									color: Colors["dark"].text,
+									color: Colors.text,
 								}}
 							>
 								会計：
@@ -773,7 +761,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 								<Text
 									style={{
 										fontSize: 24,
-										color: Colors["dark"].text,
+										color: Colors.text,
 										textAlign: "center",
 										marginTop: 10,
 										fontWeight: "500",
@@ -807,8 +795,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 															selectingCard ===
 															index
 																? tintColor
-																: Colors["dark"]
-																		.icon,
+																: Colors.icon,
 														borderRadius: 20,
 														padding: 16,
 														minHeight: 80,
@@ -843,9 +830,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 																selectingCard ===
 																index
 																	? "white"
-																	: Colors[
-																			"dark"
-																	  ].icon
+																	: Colors.icon
 															}
 														/>
 														<View>
@@ -858,10 +843,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 																		selectingCard ===
 																		index
 																			? "white"
-																			: Colors[
-																					"dark"
-																			  ]
-																					.text,
+																			: Colors.text,
 																}}
 															>
 																{card.type ==
@@ -876,10 +858,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 																		selectingCard ===
 																		index
 																			? "white"
-																			: Colors[
-																					"dark"
-																			  ]
-																					.icon,
+																			: Colors.icon,
 																}}
 															>
 																{`********${card.number
@@ -897,9 +876,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 																selectingCard ===
 																index
 																	? "white"
-																	: Colors[
-																			"dark"
-																	  ].icon,
+																	: Colors.icon,
 															borderWidth: 2,
 															borderRadius: 100,
 															padding: 2,
@@ -953,7 +930,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 											marginTop: 18,
 											borderTopWidth:
 												StyleSheet.hairlineWidth,
-											borderTopColor: Colors["dark"].icon,
+											borderTopColor: Colors.icon,
 											paddingTop: 20,
 										}}
 									>
@@ -961,7 +938,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 											style={{
 												fontSize: 18,
 												marginLeft: "auto",
-												color: Colors["dark"].text,
+												color: Colors.text,
 											}}
 										>
 											会計：
@@ -1010,7 +987,7 @@ const BookTicket = ({ movieId }: { movieId: string }) => {
 									style={{
 										flex: 1,
 										backgroundColor:
-											Colors["dark"].backgroundSecondary,
+											Colors.backgroundSecondary,
 										paddingTop: insets.top,
 									}}
 								>

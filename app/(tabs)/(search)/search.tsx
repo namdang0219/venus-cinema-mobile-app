@@ -41,12 +41,12 @@ const SearchScreen = () => {
 					ref={inputRef}
 					placeholder="映画を検索..."
 					style={{
-						backgroundColor: Colors[scheme ?? "light"].input,
+						backgroundColor: Colors.input,
 						flex: 1,
 						paddingHorizontal: 15,
 						paddingVertical: 8,
 						borderRadius: 8,
-						color: Colors[scheme ?? "light"].text,
+						color: Colors.text,
 					}}
 				/>
 				<CustomTouchableOpacity onPress={handleCancel}>

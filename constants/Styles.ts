@@ -17,7 +17,7 @@ export const Styles = StyleSheet.create({
 	actionSheetContainer: {
 		borderTopLeftRadius: 20,
 		borderTopRightRadius: 20,
-		backgroundColor: Colors.dark.backgroundSecondary,
+		backgroundColor: Colors.backgroundSecondary,
 		paddingBottom: insets && insets?.bottom + 16,
 		paddingHorizontal: Dimentions.appPadding,
 	},

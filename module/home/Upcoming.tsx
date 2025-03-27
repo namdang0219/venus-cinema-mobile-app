@@ -6,7 +6,7 @@ import NoData from "../NoData";
 
 const Upcoming = () => {
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/movies?populate=poster&filters[movie_status]=ComingSoon`,
+		`${process.env.EXPO_PUBLIC_API_URL}/movies?populate=poster&filters[movie_status]=ComingSoon&sort=updatedAt:desc&pagination[start]=0&pagination[limit]=5`,
 		fetcher
 	);
 

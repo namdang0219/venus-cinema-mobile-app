@@ -6,7 +6,6 @@ import { FlatList } from "react-native-gesture-handler";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
-import { MovieType } from "@/utils/types/MovieType";
 
 const itemWidth = Dimentions.window.width / 2.6;
 
@@ -73,7 +72,7 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 												aspectRatio: "3/4.2",
 												borderRadius: 5,
 												backgroundColor:
-													Colors["dark"].input,
+													Colors.input,
 											}}
 										/>
 									)}
@@ -92,7 +91,7 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 								</CustomTouchableOpacity>
 								<CustomTouchableOpacity
 									style={{
-										backgroundColor: Colors.dark.tint,
+										backgroundColor: Colors.tint,
 										height: 34,
 										justifyContent: "center",
 										alignItems: "center",

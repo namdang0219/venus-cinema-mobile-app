@@ -10,10 +10,12 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { SheetProvider } from "react-native-actions-sheet";
 import { StatusBar } from "react-native";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
+import { Colors } from "@/constants/Colors";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,24 +37,29 @@ export default function RootLayout() {
 	}
 
 	return (
-		<SafeAreaProvider>
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<StatusBar barStyle="light-content" />
-				<ThemeProvider
-					value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-				>
-					<SheetProvider context="global">
-						<Stack>
-							<Stack.Screen
-								name="(tabs)"
-								options={{ headerShown: false }}
-							/>
-							<Stack.Screen name="+not-found" />
-						</Stack>
-					</SheetProvider>
-					<StatusBar barStyle='light-content' />
-				</ThemeProvider>
-			</GestureHandlerRootView>
-		</SafeAreaProvider>
+		<Provider store={store}>
+			<SafeAreaProvider>
+				<GestureHandlerRootView style={{ flex: 1 }}>
+					<StatusBar barStyle="light-content" />
+					<ThemeProvider
+						value={
+							colorScheme === "dark" ? DarkTheme : DarkTheme
+							// colorScheme === "dark" ? Colors : Colors
+						}
+					>
+						<SheetProvider context="global">
+							<Stack>
+								<Stack.Screen
+									name="(tabs)"
+									options={{ headerShown: false }}
+								/>
+								<Stack.Screen name="+not-found" />
+							</Stack>
+						</SheetProvider>
+						<StatusBar barStyle="light-content" />
+					</ThemeProvider>
+				</GestureHandlerRootView>
+			</SafeAreaProvider>
+		</Provider>
 	);
 }

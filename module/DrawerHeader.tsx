@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native";
 import React from "react";
 import HeaderContainer from "@/components/ui/HeaderContainer";
-import { useNavigation } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 import { Dimentions } from "@/constants/Dimentions";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { DrawerActions } from "@react-navigation/native";
@@ -12,6 +12,7 @@ const logo = require("./../assets/images/venus-logo.png");
 
 const DrawerHeader = () => {
 	const { dispatch } = useNavigation();
+	const { push } = useRouter();
 
 	return (
 		<HeaderContainer>
@@ -28,7 +29,10 @@ const DrawerHeader = () => {
 				<AutoHeightImage source={logo} width={100} />
 
 				{/* user icon  */}
-				<CustomTouchableOpacity style={{ width: 30 }}>
+				<CustomTouchableOpacity
+					style={{ width: 30 }}
+					onPress={() => push(`/profile`)}
+				>
 					<FontAwesome6
 						name="circle-user"
 						size={22}

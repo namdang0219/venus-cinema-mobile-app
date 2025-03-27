@@ -1,4 +1,4 @@
-import { View, Text, Image, Alert } from "react-native";
+import { View, Text, Image, Alert, StyleSheet, Share } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Dimentions } from "@/constants/Dimentions";
 import { Pressable, ScrollView } from "react-native-gesture-handler";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
-import HorizontalListLayout from "@/components/layout/HorizontalListLayout";
 import CustomImageViewer from "@/components/custom/CustomImageViewer";
 import ActionSheet, {
 	ActionSheetRef,
@@ -24,6 +23,7 @@ import useSWR from "swr";
 import { fetcher } from "@/utils/func/fetcher";
 import { MovieType } from "@/utils/types/MovieType";
 import NoData from "@/module/NoData";
+import NowShowing from "@/module/home/NowShowing";
 
 // STATUS : 上映中 | 公開予定 | 上映終了
 
@@ -43,7 +43,7 @@ function renderMovieStatus(status: MovieType["movie_status"]) {
 function renderMovieStatusBg(status: MovieType["movie_status"]) {
 	switch (status) {
 		case "NowShowing":
-			return Colors["dark"].tint;
+			return Colors.tint;
 		case "ComingSoon":
 			return "#EC4899";
 		case "Finished":
@@ -75,7 +75,19 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 			headerTintColor: "white",
 			headerBackButtonDisplayMode: "minimal",
 			headerRight: () => (
-				<CustomTouchableOpacity>
+				<CustomTouchableOpacity
+					onPress={async () =>
+						await Share.share(
+							{
+								title: "THẺ THÀNH VIÊN - TÍCH ĐIỂM ĐỔI QUÀ",
+								message:
+									"Cùng bạn bè thưởng thức những ưu đãi mới nhất từ Venus",
+								url: "https://www.venuscinema.vn/the-thanh-vien-tich-diem-doi-qua.html",
+							},
+							{ tintColor: Colors.tint }
+						)
+					}
+				>
 					<EvilIcons name="share-apple" size={30} color={"white"} />
 				</CustomTouchableOpacity>
 			),
@@ -128,8 +140,8 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 	return (
 		<ParallaxScrollView
 			headerBackgroundColor={{
-				light: Colors.light.input,
-				dark: Colors.dark.input,
+				light: Colors.input,
+				dark: Colors.input,
 			}}
 			headerImage={
 				<Image
@@ -140,20 +152,9 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 				/>
 			}
 		>
-			<View
-				style={{
-					flex: 1,
-					backgroundColor: Colors.dark.background,
-					paddingTop: 20,
-				}}
-			>
-				<View
-					style={{
-						paddingHorizontal: Dimentions.appPadding,
-						flexDirection: "row",
-						gap: 12,
-					}}
-				>
+			<View style={styles.container}>
+				<View style={styles.infoContainer}>
+					{/* poster show modal */}
 					<>
 						<Pressable onPress={() => setShowPoster(true)}>
 							<Image
@@ -163,7 +164,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 								style={{
 									width: width / 3.5,
 									aspectRatio: "2/3",
-									backgroundColor: Colors.dark.input,
+									backgroundColor: Colors.input,
 								}}
 							/>
 						</Pressable>
@@ -173,30 +174,24 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							setIsVisible={setShowPoster}
 						/>
 					</>
+
 					<View style={{ flex: 1 }}>
 						{/* status  */}
 						<View
-							style={{
-								backgroundColor: renderMovieStatusBg(
-									movieDetail?.movie_status
-								),
-								alignSelf: "flex-start",
-								paddingHorizontal: 8,
-								paddingVertical: 0,
-								borderRadius: 100,
-								marginBottom: 5,
-							}}
+							style={[
+								styles.statusContainer,
+								{
+									backgroundColor: renderMovieStatusBg(
+										movieDetail?.movie_status
+									),
+								},
+							]}
 						>
-							<ThemedText
-								style={{
-									fontSize: 10,
-									fontWeight: "500",
-									lineHeight: 18,
-								}}
-							>
+							<ThemedText style={styles.status}>
 								{renderMovieStatus(movieDetail?.movie_status)}
 							</ThemedText>
 						</View>
+
 						<ThemedText
 							type="subtitle"
 							style={{
@@ -208,7 +203,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							{movieDetail?.title}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							{movieDetail?.casts}
+							Diễn viên: {movieDetail?.casts}
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
 							Ngày chiếu:{" "}
@@ -218,64 +213,42 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							Thời lượng: {movieDetail?.duration} phút
 						</ThemedText>
 						<ThemedText style={{ fontSize: 14 }} numberOfLines={1}>
-							Ngôn ngữ: {movieDetail?.language.name}
+							Ngôn ngữ: {movieDetail?.language?.name}
 						</ThemedText>
 					</View>
 				</View>
 
-				{/* button  */}
+				{/* action buttons list */}
 				<ScrollView
 					horizontal
 					style={{ flexGrow: 0 }}
-					contentContainerStyle={{
-						marginTop: 14,
-						paddingHorizontal: Dimentions.appPadding,
-						gap: 10,
-					}}
+					contentContainerStyle={styles.buttonContainer}
 					showsHorizontalScrollIndicator={false}
 				>
 					{featureButtons.map(({ label, action }, index) => (
 						<CustomTouchableOpacity
 							key={index}
-							style={{
-								backgroundColor: tintColor,
-								paddingHorizontal: 14,
-								paddingVertical: 6,
-								borderRadius: 1000,
-							}}
+							style={styles.button}
 							onPress={action}
 						>
-							<Text
-								style={{
-									color: "white",
-									fontSize: 16,
-									fontWeight: "500",
-								}}
-							>
-								{label}
-							</Text>
+							<Text style={styles.buttonText}>{label}</Text>
 						</CustomTouchableOpacity>
 					))}
 				</ScrollView>
 
 				{/* desc  */}
-				<ThemedText
-					style={{
-						paddingHorizontal: Dimentions.appPadding,
-						marginTop: 12,
-						marginBottom: 20,
-					}}
-				>
+				<ThemedText style={styles.desc}>
 					{movieDetail?.description}
 				</ThemedText>
 
 				{/* similar movie  */}
-				<HorizontalListLayout
+				{/* <HorizontalListLayout
 					title="関連作品"
 					rightButton={false}
 					rightButtonAction={() => {}}
 					listItems={Array(5).fill(null)}
-				/>
+				/> */}
+				<NowShowing />
 			</View>
 
 			<ActionSheet
@@ -289,7 +262,7 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 						<ThemedText
 							type="subtitle"
 							style={{
-								color: Colors["dark"].tint,
+								color: Colors.tint,
 								marginBottom: 20,
 							}}
 						>
@@ -314,7 +287,9 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 							}}
 							numberOfLines={2}
 						>
-							Nụ hôn bạc tỷ (2025)
+							{`${movieDetail?.title} (${new Date(
+								movieDetail?.releaseDate
+							).getFullYear()})`}
 						</ThemedText>
 					</View>
 
@@ -357,13 +332,13 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 										style={{
 											width: itemWidth,
 											borderWidth: 1,
-											borderColor: Colors["dark"].icon,
+											borderColor: Colors.icon,
 										}}
 									>
 										<View
 											style={{
 												backgroundColor:
-													Colors["dark"].input,
+													Colors.input,
 												height: 32,
 												justifyContent: "center",
 												alignItems: "center",
@@ -403,5 +378,51 @@ const MovieDetail = ({ movieId }: { movieId: string }) => {
 		</ParallaxScrollView>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: Colors.background,
+		paddingTop: 20,
+	},
+	infoContainer: {
+		paddingHorizontal: Dimentions.appPadding,
+		flexDirection: "row",
+		gap: 12,
+	},
+	statusContainer: {
+		alignSelf: "flex-start",
+		paddingHorizontal: 8,
+		paddingVertical: 0,
+		borderRadius: 100,
+		marginBottom: 5,
+	},
+	status: {
+		fontSize: 10,
+		fontWeight: "500",
+		lineHeight: 18,
+	},
+	buttonContainer: {
+		marginTop: 14,
+		paddingHorizontal: Dimentions.appPadding,
+		gap: 10,
+	},
+	button: {
+		backgroundColor: tintColor,
+		paddingHorizontal: 14,
+		paddingVertical: 6,
+		borderRadius: 1000,
+	},
+	buttonText: {
+		color: "white",
+		fontSize: 16,
+		fontWeight: "500",
+	},
+	desc: {
+		paddingHorizontal: Dimentions.appPadding,
+		marginTop: 12,
+		marginBottom: 20,
+	},
+});
 
 export default MovieDetail;

@@ -25,13 +25,13 @@ const TicketPriceScreen = () => {
 				flex: 1,
 				paddingHorizontal: Dimentions.appPadding,
 				paddingTop: 20,
-				backgroundColor: Colors["dark"].backgroundSecondary,
+				backgroundColor: Colors.backgroundSecondary,
 			}}
 		>
 			<View style={{ marginBottom: 16 }}>
 				<View style={{ flexDirection: "row", gap: 14 }}>
 					<View
-						style={{ backgroundColor: Colors.dark.tint, width: 4 }}
+						style={{ backgroundColor: Colors.tint, width: 4 }}
 					/>
 					<ThemedText
 						type="title"
@@ -60,7 +60,7 @@ const TicketPriceScreen = () => {
 						width={
 							Dimentions.window.width - Dimentions.appPadding * 2
 						}
-						style={{ backgroundColor: Colors.dark.input }}
+						style={{ backgroundColor: Colors.input }}
 						source={{
 							uri: "https://www.venuscinema.vn/uploaded/bang-gia-ve-rap-venus-hai-duong-2025.jpg",
 						}}

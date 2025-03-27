@@ -30,9 +30,9 @@ const CampaignScreen = () => {
 			headerTitle: "キャンペーン詳細",
 			headerBackTitle: 'ホーム',
 			headerStyle: {
-				backgroundColor: Colors["dark"].background,
+				backgroundColor: Colors.background,
 			},
-			headerTintColor: Colors["dark"].tint,
+			headerTintColor: Colors.tint,
 			headerRight: () => (
 				<CustomTouchableOpacity
 					onPress={async () =>
@@ -43,14 +43,14 @@ const CampaignScreen = () => {
 									"Cùng bạn bè thưởng thức những ưu đãi mới nhất từ Venus",
 								url: "https://www.venuscinema.vn/the-thanh-vien-tich-diem-doi-qua.html",
 							},
-							{ tintColor: Colors["dark"].tint }
+							{ tintColor: Colors.tint }
 						)
 					}
 				>
 					<EvilIcons
 						name="share-apple"
 						size={30}
-						color={Colors["dark"].tint}
+						color={Colors.tint}
 					/>
 				</CustomTouchableOpacity>
 			),
@@ -70,7 +70,7 @@ const CampaignScreen = () => {
 		<ScrollView
 			style={{
 				flex: 1,
-				backgroundColor: Colors["dark"].backgroundSecondary,
+				backgroundColor: Colors.backgroundSecondary,
 				paddingHorizontal: Dimentions.appPadding,
 				paddingTop: 20,
 			}}

@@ -26,12 +26,12 @@ const ContactScreen = () => {
 				flex: 1,
 				paddingHorizontal: Dimentions.appPadding,
 				paddingTop: 20,
-				backgroundColor: Colors["dark"].backgroundSecondary,
+				backgroundColor: Colors.backgroundSecondary,
 			}}
 		>
 			<View style={{ flexDirection: "row", gap: 10 }}>
 				<View
-					style={{ width: 4, backgroundColor: Colors["dark"].tint }}
+					style={{ width: 4, backgroundColor: Colors.tint }}
 				></View>
 				<ThemedText
 					type="title"
@@ -45,7 +45,7 @@ const ContactScreen = () => {
 			<View style={{ marginTop: 14, marginHorizontal: 14 }}>
 				<Text
 					style={{
-						color: Colors.dark.tint,
+						color: Colors.tint,
 						textTransform: "uppercase",
 						fontSize: 18,
 					}}
@@ -116,7 +116,7 @@ const ContactScreen = () => {
 				<View style={{ flexDirection: "row", marginTop: 14 }}>
 					<CustomTouchableOpacity
 						style={{
-							backgroundColor: Colors.dark.tint,
+							backgroundColor: Colors.tint,
 							height: 35,
 							paddingHorizontal: 14,
 							borderRadius: 8,
@@ -169,7 +169,7 @@ const ContactScreen = () => {
 					<CustomTouchableOpacity
 						style={{
 							marginTop: 18,
-							backgroundColor: Colors.dark.tint,
+							backgroundColor: Colors.tint,
 							height: 48,
 							justifyContent: "center",
 							alignItems: "center",

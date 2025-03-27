@@ -10,13 +10,15 @@ import { MovieType } from "@/utils/types/MovieType";
 import { Entypo } from "@expo/vector-icons";
 import CustomTouchableOpacity from "@/components/custom/CustomTouchableOpacity";
 import { Styles } from "@/constants/Styles";
+import { useRouter } from "expo-router";
 
 const MovieSlider = () => {
 	const scrollOffsetValue = useSharedValue<number>(0);
 	const ref = React.useRef<ICarouselInstance>(null);
+	const { push } = useRouter();
 
 	const { data } = useSWR(
-		`${process.env.EXPO_PUBLIC_API_URL}/movies?populate=banner&filters[movie_status]=NowShowing&pagination[start]=0&pagination[limit]=3`,
+		`${process.env.EXPO_PUBLIC_API_URL}/movies?populate=banner&filters[movie_status]=NowShowing&sort=updatedAt:desc&pagination[start]=0&pagination[limit]=3`,
 		fetcher
 	);
 
@@ -49,20 +51,18 @@ const MovieSlider = () => {
 				defaultScrollOffsetValue={scrollOffsetValue}
 				style={{ width: "100%" }}
 				renderItem={({ item }: { item: MovieType }) => (
-					<>
+					<CustomTouchableOpacity
+						onPress={() => push(`/detail/${item?.documentId}`)}
+					>
 						{item?.banner && (
 							<Image
 								source={{
 									uri: item?.banner.uri,
 								}}
-								style={{
-									width: Dimentions.window.width,
-									aspectRatio: "16/10",
-									backgroundColor: "gray",
-								}}
+								style={styles.image}
 							/>
 						)}
-					</>
+					</CustomTouchableOpacity>
 				)}
 			/>
 
@@ -102,6 +102,12 @@ const MovieSlider = () => {
 	);
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+	image: {
+		width: Dimentions.window.width,
+		aspectRatio: "16/10",
+		backgroundColor: "gray",
+	},
+});
 
 export default MovieSlider;
