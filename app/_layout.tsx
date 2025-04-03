@@ -43,8 +43,8 @@ export default function RootLayout() {
 					<StatusBar barStyle="light-content" />
 					<ThemeProvider
 						value={
-							colorScheme === "dark" ? DarkTheme : DarkTheme
-							// colorScheme === "dark" ? Colors : Colors
+							// colorScheme === "dark" ? DefaultTheme : DarkTheme
+							DarkTheme
 						}
 					>
 						<SheetProvider context="global">

@@ -44,15 +44,6 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="(save)"
-					options={{
-						title: "保存",
-						tabBarIcon: ({ color }) => (
-							<Feather size={28} name="bookmark" color={color} />
-						),
-					}}
-				/>
-				<Tabs.Screen
 					name="(notification)"
 					options={{
 						title: "通知",

@@ -81,6 +81,7 @@ const HorizontalListLayout: FC<HorizontalListLayoutProps> = ({
 										style={{
 											marginTop: 6,
 											fontSize: 14,
+											height: 52
 										}}
 										numberOfLines={2}
 									>
